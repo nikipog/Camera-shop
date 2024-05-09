@@ -889,6 +889,7 @@ const CatalogPage = memo((): JSX.Element => (
   </div>
 ));
 
-CatalogPage.displayName = 'CatalogPage'
+CatalogPage.displayName = 'CatalogPage';
+
 
 export default CatalogPage;
