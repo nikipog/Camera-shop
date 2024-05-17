@@ -4,11 +4,10 @@ import { useAppSelector } from '../../hooks/store';
 import { selectProducts, selectProductsStatus } from '../../store/selectors/product-selectors';
 import { RequestStatus } from '../../const';
 
-const CatalogPage = memo((): JSX.Element => {
 
+const CatalogPage = memo((): JSX.Element => {
   const products = useAppSelector(selectProducts);
   const status = useAppSelector(selectProductsStatus);
-
 
   return (
     < main >

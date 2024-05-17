@@ -16,3 +16,6 @@ export const ToastifyMessages = {
 
 export const MAX_RATING_COUNT = 5;
 
+export const MODAL_NAMES = {
+  CATALOG_CALL_MODAL: 'CatalogCallModal',
+} as const;

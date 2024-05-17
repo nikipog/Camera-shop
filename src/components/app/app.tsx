@@ -9,6 +9,8 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
 import { productsActions } from '../../store/slices/products/products';
 import { toast } from 'react-toastify';
+import { ModalProvider } from '../../context/modal-context';
+import ModalManager from '../modals/modal-manager';
 
 function App(): JSX.Element {
 
@@ -24,26 +26,29 @@ function App(): JSX.Element {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path={AppRoute.Catalog}
-            element={<Layout />}
-          >
+      <ModalProvider>
+        <ModalManager />
+        <BrowserRouter>
+          <Routes>
             <Route
               path={AppRoute.Catalog}
-              element={<CatalogPage />}
+              element={<Layout />}
+            >
+              <Route
+                path={AppRoute.Catalog}
+                element={<CatalogPage />}
+              />
+            </Route>
+
+            <Route
+              path='*'
+              element={<NotFoundPage />}
             />
-          </Route>
 
-          <Route
-            path='*'
-            element={<NotFoundPage />}
-          />
-
-        </Routes>
-      </BrowserRouter>
-    </HelmetProvider>
+          </Routes>
+        </BrowserRouter>
+      </ModalProvider>
+    </HelmetProvider >
   );
 }
 
