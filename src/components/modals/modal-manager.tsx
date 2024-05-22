@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useModal } from '../../hooks/context';
+import { useModalContext } from '../../hooks/modal-context';
 import CatalogCallModal from './catalog-modals/catalog-call-modal';
 
 const ModalLookup: Record<string, FC | undefined> = {
@@ -7,7 +7,7 @@ const ModalLookup: Record<string, FC | undefined> = {
 };
 
 const ModalManager: FC = () => {
-  const { modal } = useModal();
+  const { modal } = useModalContext();
 
   if (!modal) {
     return null;

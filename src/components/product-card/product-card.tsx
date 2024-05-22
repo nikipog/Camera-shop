@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import { Product } from '../../types/product';
 import ProductRating from '../product-rating/product-rating';
-import { useModal } from '../../hooks/context';
+import { useModalContext } from '../../hooks/modal-context';
 import { MODAL_NAMES } from '../../const';
+import { scrollController } from '../../utils/sctoll-controller';
 
 
 type ProductCardProps = {
@@ -12,9 +13,13 @@ type ProductCardProps = {
 
 const ProductCard = memo(({ product }: ProductCardProps): JSX.Element => {
   const { previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, name, reviewCount, price, rating } = product;
-  const { openModal} = useModal();
+  const { openModal} = useModalContext();
 
-  const handleOpenModal = (modalName: string) => () => openModal(modalName);
+  const handleOpenModal = (modalName: string) => () => {
+    openModal(modalName);
+    scrollController.disableScroll();
+  };
+
 
   return (
     <div className="product-card">

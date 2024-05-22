@@ -1,17 +1,31 @@
-import { useModal } from '../../../hooks/context';
+import { ChangeEvent, useRef, useState } from 'react';
+import { useModalRules } from '../../../hooks/modal-rules';
 
 function CatalogCallModal(): JSX.Element {
-  const { closeModal } = useModal();
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const orderButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const { modalRef, overlayRef, handleCloseModal } = useModalRules([phoneInputRef, orderButtonRef, closeButtonRef]);
 
-  const handleCloseModal = () => {
-    closeModal();
+  const [phone, setPhone] = useState<string>('');
+  const [error, setError] = useState<string>('');
+
+  const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const phoneRegex = /^(\+7|8)?\(?9\d{2}\)?\d{3}[- ]?\d{2}[- ]?\d{2}$/;
+    if (phoneRegex.test(value)) {
+      setError('');
+    } else {
+      setError('Неправильный формат номера');
+    }
+    setPhone(value);
   };
 
   return (
     <div className="modal is-active">
       <div className="modal__wrapper">
-        <div className="modal__overlay" />
-        <div className="modal__content">
+        <div className="modal__overlay" ref={overlayRef} />
+        <div className="modal__content" ref={modalRef}>
           <p className="title title--h4">Свяжитесь со мной</p>
           <div className="basket-item basket-item--short">
             <div className="basket-item__img">
@@ -53,16 +67,21 @@ function CatalogCallModal(): JSX.Element {
                 </svg>
               </span>
               <input
+                ref={phoneInputRef}
                 type="tel"
                 name="user-tel"
                 placeholder="Введите ваш номер"
+
                 required
+                value={phone}
+                onInput={handlePhoneChange}
               />
             </label>
-            <p className="custom-input__error">Нужно указать номер</p>
+            {error && <p className="custom-input__error">{error}</p>}
           </div>
           <div className="modal__buttons">
             <button
+              ref={orderButtonRef}
               className="btn btn--purple modal__btn modal__btn--fit-width"
               type="button"
             >
@@ -73,6 +92,7 @@ function CatalogCallModal(): JSX.Element {
             </button>
           </div>
           <button
+            ref={closeButtonRef}
             className="cross-btn"
             type="button"
             aria-label="Закрыть попап"
@@ -86,7 +106,6 @@ function CatalogCallModal(): JSX.Element {
       </div>
     </div>
   );
-
 }
 
 export default CatalogCallModal;
