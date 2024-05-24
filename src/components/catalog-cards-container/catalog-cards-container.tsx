@@ -5,15 +5,17 @@ import NoProducts from '../no-products/no-products';
 
 type CatalogCardsContainerProps = {
   products: Product[];
+  onProductClick: (modalName: string, product: Product) => void;
 }
 
-const CatalogCardsContainer = memo(({ products }: CatalogCardsContainerProps): JSX.Element => (
+const CatalogCardsContainer = memo(({ products, onProductClick }: CatalogCardsContainerProps): JSX.Element => (
   <div className="cards catalog__cards">
     {!products.length ? <NoProducts /> :
       products.map((product) => (
         <ProductCard
           key={product.id}
           product={product}
+          onProductClick={onProductClick}
         />
       ))}
   </div>

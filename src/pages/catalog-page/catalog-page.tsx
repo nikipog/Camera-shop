@@ -3,11 +3,24 @@ import CatalogCardsContainer from '../../components/catalog-cards-container/cata
 import { useAppSelector } from '../../hooks/store';
 import { selectProducts, selectProductsStatus } from '../../store/selectors/product-selectors';
 import { RequestStatus } from '../../const';
+import { useModalContext } from '../../hooks/modal-context';
+import { scrollController } from '../../utils/sctoll-controller';
+import { Product } from '../../types/product';
+import { useSelectedProduct } from '../../hooks/select-product';
 
 
 const CatalogPage = memo((): JSX.Element => {
   const products = useAppSelector(selectProducts);
   const status = useAppSelector(selectProductsStatus);
+
+  const { openModal } = useModalContext();
+  const { setSelectedProduct } = useSelectedProduct();
+
+  const handleBuyButtonClick = (modalName: string, product: Product) => {
+    setSelectedProduct(product);
+    openModal(modalName);
+    scrollController.disableScroll();
+  };
 
   return (
     < main >
@@ -71,7 +84,10 @@ const CatalogPage = memo((): JSX.Element => {
                 {status === RequestStatus.Loading ? (
                   <div> Загрузка ... </div>
                 ) : (
-                  <CatalogCardsContainer products={products} />
+                  <CatalogCardsContainer
+                    products={products}
+                    onProductClick={handleBuyButtonClick}
+                  />
                 )}
               </div>
             </div>
