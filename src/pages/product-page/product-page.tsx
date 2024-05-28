@@ -100,7 +100,7 @@ const ProductPage = memo((): JSX.Element => (
                 <picture>
                   <source
                     type="image/webp"
-                    srcSet="img/content/img1.webp, img/content/img1@2x.webp 2x"
+                    srcSet="/img/content/img1.webp, img/content/img1@2x.webp 2x"
                   />
                   <img
                     src="img/content/img1.jpg"

@@ -42,6 +42,10 @@ function App(): JSX.Element {
                   element={<CatalogPage />}
                 />
               </Route>
+              <Route
+                path={AppRoute.Product}
+                element={<ProductPage />}
+              />
 
               <Route
                 path='*'
