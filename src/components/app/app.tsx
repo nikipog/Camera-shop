@@ -7,8 +7,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute, ToastifyMessages } from '../../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
-import { productsActions } from '../../store/slices/products/products';
-import { toast } from 'react-toastify';
+import { productsActions } from '../../store/slices/products';
+import { ToastContainer, toast } from 'react-toastify';
 import { ModalProvider } from '../../context/modal-context';
 import ModalManager from '../modals/modal-manager';
 import { SelectedProductProvider } from '../../context/selected-product-context';
@@ -27,6 +27,7 @@ function App(): JSX.Element {
 
   return (
     <HelmetProvider>
+      <ToastContainer />
       <ModalProvider>
         <SelectedProductProvider>
           <ModalManager />

@@ -4,14 +4,16 @@ export enum AppRoute {
 }
 
 export const Endpoint = {
-  Cameras: '/cameras'
+  Cameras: '/cameras',
+  Orders: '/orders'
 } as const;
 
 export const enum RequestStatus { Idle, Loading, Success, Failed }
 
 export const ToastifyMessages = {
   FetchProductsError: 'Не удалось загрузить данные с сервера',
-  AuthError: 'Ошибка отправки данных на сервер'
+  AuthError: 'Ошибка отправки данных на сервер',
+  SendOrderError: 'Не удалось отправить данные'
 } as const;
 
 export const MAX_RATING_COUNT = 5;
