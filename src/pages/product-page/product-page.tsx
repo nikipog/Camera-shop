@@ -13,6 +13,7 @@ import DescriptionTab from '../../components/description-tab/description-tab';
 import { fetchReviews } from '../../store/thunks/reviews';
 import { selectReviews } from '../../store/selectors/reviews-selectors';
 import ReviewsList from '../../components/reviews-list/reviews-list';
+import ScrollToTopButton from '../../components/scroll-to-top-button/scroll-to-top-button';
 
 const TabNames = {
   Characteristics: 'characteristics',
@@ -29,6 +30,7 @@ const ProductPage = memo((): JSX.Element => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const safeId = id ?? '';
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -420,21 +422,12 @@ const ProductPage = memo((): JSX.Element => {
                 <ReviewsList
                   reviews={reviews}
                 />
-                <div className="review-block__buttons">
-                  <button className="btn btn--purple" type="button">
-                    Показать больше отзывов
-                  </button>
-                </div>
               </div>
             </section>
           </div>
         </div>
       </main >
-      <a className="up-btn" href="#header">
-        <svg width={12} height={18} aria-hidden="true">
-          <use xlinkHref="#icon-arrow2" />
-        </svg>
-      </a>
+      <ScrollToTopButton />
     </>);
 });
 

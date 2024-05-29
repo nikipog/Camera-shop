@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { scrollController } from '../utils/sctoll-controller';
+import { scrollController } from '../utils/scroll-controller';
 import { useModalContext } from './modal-context';
 
 const NO_FOCUSABLE = 0;

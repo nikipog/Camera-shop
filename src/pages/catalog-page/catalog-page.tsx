@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/store';
 import { selectProducts, selectProductsStatus } from '../../store/selectors/products-selectors';
 import { RequestStatus } from '../../const';
 import { useModalContext } from '../../hooks/modal-context';
-import { scrollController } from '../../utils/sctoll-controller';
+import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
 import { useSelectedProduct } from '../../hooks/select-product';
 import { Helmet } from 'react-helmet-async';

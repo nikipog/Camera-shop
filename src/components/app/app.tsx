@@ -12,6 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { ModalProvider } from '../../context/modal-context';
 import ModalManager from '../modals/modal-manager';
 import { SelectedProductProvider } from '../../context/selected-product-context';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App(): JSX.Element {
 

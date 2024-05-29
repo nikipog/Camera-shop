@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Review } from '../../types/reviews';
 import ProductRating from '../product-rating/product-rating';
+import { formatReviewDate } from '../../utils/utils';
 
 
 type ReviewItemProps = {
@@ -12,12 +13,14 @@ const ReviewItem = memo(({ review }: ReviewItemProps): JSX.Element => {
 
   const { userName, createAt, rating, advantage, disadvantage, review: comment } = review;
 
+  const formattedDate = formatReviewDate(createAt);
+
   return (
     <li className="review-card">
       <div className="review-card__head">
         <p className="title title--h4">{userName}</p>
-        <time className="review-card__data" dateTime="2022-04-13">
-          {createAt}
+        <time className="review-card__data" dateTime={createAt}>
+          {formattedDate}
         </time>
       </div>
       <div className="rate review-card__rate">
