@@ -5,7 +5,7 @@ export enum AppRoute {
 
 export const Endpoint = {
   Cameras: '/cameras',
-  Orders: '/orders'
+  Orders: '/orders',
 } as const;
 
 export const enum RequestStatus { Idle, Loading, Success, Failed }

@@ -4,13 +4,13 @@ import { RequestStatus } from '../../const';
 import { Product } from '../../types/product';
 import { fetchProduct } from '../thunks/products';
 
-interface QuestState {
+interface ProductState {
   product: Product | null;
   status: RequestStatus;
 }
 
 //начальное состояние
-const initialState: QuestState = {
+const initialState: ProductState = {
   // храним объект продукта, важно указывать null вместо пустого объекта!
   product: null,
   //состояние
@@ -45,5 +45,5 @@ export const productSlice = createSlice({
   },
 });
 
-export const questActions = {...productSlice.actions, fetchProduct}; //асинхронные экшены на получение квеста
+export const productActions = {...productSlice.actions, fetchProduct}; //асинхронные экшены на получение квеста
 

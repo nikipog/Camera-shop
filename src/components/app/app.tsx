@@ -41,11 +41,12 @@ function App(): JSX.Element {
                   path={AppRoute.Catalog}
                   element={<CatalogPage />}
                 />
+                <Route
+                  path={AppRoute.Product}
+                  element={<ProductPage />}
+                />
               </Route>
-              <Route
-                path={AppRoute.Product}
-                element={<ProductPage />}
-              />
+
 
               <Route
                 path='*'

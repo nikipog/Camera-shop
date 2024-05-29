@@ -7,6 +7,7 @@ import { useModalContext } from '../../hooks/modal-context';
 import { scrollController } from '../../utils/sctoll-controller';
 import { Product } from '../../types/product';
 import { useSelectedProduct } from '../../hooks/select-product';
+import { Helmet } from 'react-helmet-async';
 
 
 const CatalogPage = memo((): JSX.Element => {
@@ -24,6 +25,9 @@ const CatalogPage = memo((): JSX.Element => {
 
   return (
     < main >
+      <Helmet>
+        <title>Camera-shop. Catalog</title>
+      </Helmet>
       <div className="banner">
         <picture>
           <source
