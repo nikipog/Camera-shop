@@ -1,7 +1,7 @@
 import { RootState } from '../../types/store';
 
-// Селектор для получения всех продуктов
-export const selectProducts = (state: RootState) => state.products.products;
+// Селектор для получения продукта
+export const selectProduct = (state: RootState) => state.product.product;
 
-// Селектор для получения статуса запроса продуктов
-export const selectProductsStatus = (state: RootState) => state.products.status;
+// Селектор для получения статуса запроса продукта
+export const selectProductStatus = (state: RootState) => state.product.status;

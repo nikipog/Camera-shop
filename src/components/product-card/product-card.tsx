@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import { Product } from '../../types/product';
 import ProductRating from '../product-rating/product-rating';
-import { MODAL_NAMES } from '../../const';
+import { AppRoute, MODAL_NAMES } from '../../const';
+import { Link, generatePath } from 'react-router-dom';
 
 
 type ProductCardProps = {
@@ -11,11 +12,14 @@ type ProductCardProps = {
 
 
 const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.Element => {
-  const { previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, name, reviewCount, price, rating, category } = product;
+  const { previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, name, reviewCount, price, rating, category, id } = product;
+
+  const url = generatePath(AppRoute.Product, { id: id.toString() });
 
   const handleButtonClick = () => {
     onProductClick(MODAL_NAMES.CATALOG_CALL_MODAL, product);
   };
+
   return (
     <div className="product-card">
       <div className="product-card__img">
@@ -44,7 +48,7 @@ const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.El
           </p>
         </div>
         <p className="product-card__title">
-          {name.includes('Ретрокамера') ? `${name}` : `${category} ${name}$` }
+          {name.includes('Ретрокамера') ? `${name}` : `${category} ${name}$`}
         </p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>{price.toLocaleString()} ₽
@@ -58,9 +62,12 @@ const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.El
         >
           Купить
         </button>
-        <a className="btn btn--transparent" href="#">
+        <Link
+          className="btn btn--transparent"
+          to={url}
+        >
           Подробнее
-        </a>
+        </Link>
       </div>
     </div>
   );

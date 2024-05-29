@@ -1,11 +1,11 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useModalRules } from '../../../hooks/modal-rules';
 import { useSelectedProduct } from '../../../hooks/select-product';
 import { Category, ProductType, formatProductType } from './util';
 import { useAppDispatch, useAppSelector } from '../../../hooks/store';
 import { ordersThunk } from '../../../store/thunks/order';
 import { RequestStatus } from '../../../const';
-import { selectOrderStatus } from '../../../store/selectors/oreder-selectors';
+import { selectOrderStatus } from '../../../store/selectors/order-selectors';
 import { createHandlePhoneInput, formatPhoneNumber, handlePhoneKeyDown, handlePhonePaste } from '../../../utils/phone-validation';
 
 function CatalogCallModal(): JSX.Element | null {
@@ -56,7 +56,7 @@ function CatalogCallModal(): JSX.Element | null {
     return null;
   }
 
-  const { category, name, vendorCode, type, level, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, price, id, description } = selectedProduct;
+  const { category, name, vendorCode, type, level, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, price } = selectedProduct;
 
   const formattedType = formatProductType(type as ProductType, category as Category);
   return (

@@ -1,12 +1,13 @@
 import { memo } from 'react';
 import CatalogCardsContainer from '../../components/catalog-cards-container/catalog-cards-container';
 import { useAppSelector } from '../../hooks/store';
-import { selectProducts, selectProductsStatus } from '../../store/selectors/product-selectors';
+import { selectProducts, selectProductsStatus } from '../../store/selectors/products-selectors';
 import { RequestStatus } from '../../const';
 import { useModalContext } from '../../hooks/modal-context';
-import { scrollController } from '../../utils/sctoll-controller';
+import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
 import { useSelectedProduct } from '../../hooks/select-product';
+import { Helmet } from 'react-helmet-async';
 
 
 const CatalogPage = memo((): JSX.Element => {
@@ -24,6 +25,9 @@ const CatalogPage = memo((): JSX.Element => {
 
   return (
     < main >
+      <Helmet>
+        <title>Camera-shop. Catalog</title>
+      </Helmet>
       <div className="banner">
         <picture>
           <source
