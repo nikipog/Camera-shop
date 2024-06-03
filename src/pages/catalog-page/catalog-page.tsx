@@ -12,6 +12,7 @@ import { Helmet } from 'react-helmet-async';
 
 const CatalogPage = memo((): JSX.Element => {
   const products = useAppSelector(selectProducts);
+  console.log(products)
   const status = useAppSelector(selectProductsStatus);
 
   const { openModal } = useModalContext();
