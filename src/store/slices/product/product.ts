@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RequestStatus } from '../../const';
+import { RequestStatus } from '../../../const';
 
-import { Product } from '../../types/product';
-import { fetchProduct } from '../thunks/products';
+import { Product } from '../../../types/product';
+import { fetchProduct } from '../../thunks/products/products';
 
 interface ProductState {
   product: Product | null;

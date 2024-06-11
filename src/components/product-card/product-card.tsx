@@ -21,7 +21,7 @@ const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.El
   };
 
   return (
-    <div className="product-card">
+    <div className="product-card" data-testid="card-value">
       <div className="product-card__img">
         <picture>
           <source

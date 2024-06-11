@@ -7,7 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute, ToastifyMessages } from '../../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
-import { productsActions } from '../../store/slices/products';
+import { productsActions } from '../../store/slices/products/products';
 import { ToastContainer, toast } from 'react-toastify';
 import { ModalProvider } from '../../context/modal-context';
 import ModalManager from '../modals/modal-manager';

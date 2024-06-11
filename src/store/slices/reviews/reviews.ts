@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { Review } from '../../types/reviews';
+import type { Review } from '../../../types/reviews';
 
-import { RequestStatus } from '../../const';
-import { fetchReviews } from '../thunks/reviews';
+import { RequestStatus } from '../../../const';
+import { fetchReviews } from '../../thunks/reviews/reviews';
 
 interface ReviewState {
   reviews: Review[];

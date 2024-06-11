@@ -3,7 +3,7 @@ import { useModalRules } from '../../../hooks/modal-rules';
 import { useSelectedProduct } from '../../../hooks/select-product';
 import { Category, ProductType, formatProductType } from './util';
 import { useAppDispatch, useAppSelector } from '../../../hooks/store';
-import { ordersThunk } from '../../../store/thunks/order';
+import { ordersThunk } from '../../../store/thunks/order/order';
 import { RequestStatus } from '../../../const';
 import { selectOrderStatus } from '../../../store/selectors/order-selectors';
 import { createHandlePhoneInput, formatPhoneNumber, handlePhoneKeyDown, handlePhonePaste } from '../../../utils/phone-validation';

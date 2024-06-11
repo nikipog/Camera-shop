@@ -4,13 +4,13 @@ import { selectProduct, selectProductStatus } from '../../store/selectors/produc
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AppRoute, RequestStatus, ToastifyMessages } from '../../const';
-import { fetchProduct } from '../../store/thunks/products';
+import { fetchProduct } from '../../store/thunks/products/products';
 import { Product } from '../../types/product';
 import ProductRating from '../../components/product-rating/product-rating';
 import { Helmet } from 'react-helmet-async';
 import CharacteristicsTab from '../../components/characteristics-tab/characteristics-tab';
 import DescriptionTab from '../../components/description-tab/description-tab';
-import { fetchReviews } from '../../store/thunks/reviews';
+import { fetchReviews } from '../../store/thunks/reviews/reviews';
 import { selectReviews } from '../../store/selectors/reviews-selectors';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import ScrollToTopButton from '../../components/scroll-to-top-button/scroll-to-top-button';
