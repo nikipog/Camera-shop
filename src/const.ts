@@ -21,3 +21,8 @@ export const MAX_RATING_COUNT = 5;
 export const MODAL_NAMES = {
   CATALOG_CALL_MODAL: 'CatalogCallModal',
 } as const;
+
+export const HttpResponseStatusCodes = {
+  SuccessfulResponse: 200,
+  ClientErrorResponse: 400,
+} as const;

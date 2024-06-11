@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { Endpoint } from '../../const';
+import { Endpoint } from '../../../const';
 
 // Интерфейс для данных заказа
 interface PostOrderProps {

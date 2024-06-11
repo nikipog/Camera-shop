@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RequestStatus } from '../../const';
-import { ordersThunk } from '../thunks/order';
+import { RequestStatus } from '../../../const';
+import { ordersThunk } from '../../thunks/order/order';
 
 interface OrderState {
   camerasIds: number[];

@@ -1,6 +1,6 @@
-import type { Product } from '../../types/product';
-import { Endpoint } from '../../const';
-import { createAppAsyncThunk } from '../../hooks/store';
+import type { Product } from '../../../types/product';
+import { Endpoint } from '../../../const';
+import { createAppAsyncThunk } from '../../../hooks/store';
 
 
 const fetchAllProducts = createAppAsyncThunk<Product[], undefined>

@@ -9,13 +9,14 @@ type CatalogCardsContainerProps = {
 }
 
 const CatalogCardsContainer = memo(({ products, onProductClick }: CatalogCardsContainerProps): JSX.Element => (
-  <div className="cards catalog__cards">
+  <div className="cards catalog__cards" data-testid="catalog-cards-container">
     {!products.length ? <NoProducts /> :
       products.map((product) => (
         <ProductCard
           key={product.id}
           product={product}
           onProductClick={onProductClick}
+
         />
       ))}
   </div>

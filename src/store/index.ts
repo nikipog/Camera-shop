@@ -1,9 +1,9 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { createApi } from '../services/api';
-import { productsSlice } from './slices/products';
-import { orderSlice } from './slices/order';
-import { productSlice } from './slices/product';
-import { reviewsSlice } from './slices/reviews';
+import { productsSlice } from './slices/products/products';
+import { orderSlice } from './slices/order/order';
+import { productSlice } from './slices/product/product';
+import { reviewsSlice } from './slices/reviews/reviews';
 
 
 const reducer = combineReducers({
