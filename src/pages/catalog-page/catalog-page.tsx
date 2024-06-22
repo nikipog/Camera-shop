@@ -8,11 +8,13 @@ import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
 import { useSelectedProduct } from '../../hooks/select-product';
 import { Helmet } from 'react-helmet-async';
+import CatalogFilter from '../../components/catalog-filter/catalog-filter';
+import { RootState } from '../../types/store';
 
 
 const CatalogPage = memo((): JSX.Element => {
   const products = useAppSelector(selectProducts);
-  console.log(products)
+  console.log(products);
   const status = useAppSelector(selectProductsStatus);
 
   const { openModal } = useModalContext();
@@ -23,6 +25,18 @@ const CatalogPage = memo((): JSX.Element => {
     openModal(modalName);
     scrollController.disableScroll();
   };
+
+  const filters = useAppSelector((state: RootState) => state.filters);
+
+  const filteredProducts = products.filter((product: Product) => {
+    const matchesCategory = !filters.category || product.category === filters.category;
+    const matchesType = filters.type.length === 0 || filters.type.includes(product.type);
+    const matchesLevel = filters.level.length === 0 || filters.level.includes(product.level);
+    const matchesPrice = product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
+
+    return matchesCategory && matchesType && matchesLevel && matchesPrice;
+  });
+
 
   return (
     < main >
@@ -81,16 +95,14 @@ const CatalogPage = memo((): JSX.Element => {
             <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
             <div className="page-content__columns">
               <div className="catalog__aside">
-                <img
-                  src="img/banner.png"
-                />
+                <CatalogFilter />
               </div>
               <div className="catalog__content">
                 {status === RequestStatus.Loading ? (
                   <div> Загрузка ... </div>
                 ) : (
                   <CatalogCardsContainer
-                    products={products}
+                    products={filteredProducts}
                     onProductClick={handleBuyButtonClick}
                   />
                 )}
