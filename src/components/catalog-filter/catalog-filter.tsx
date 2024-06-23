@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../types/store';
 import { setCategory, toggleType, toggleLevel, setPriceRange, resetFilters } from '../../store/slices/filters/filter';
@@ -9,9 +9,9 @@ const CatalogFilter = memo(() => {
 
   const dispatch = useAppDispatch();
   const filters = useSelector((state: RootState) => state.filters);
+  const minPrice = filters.priceRange.min;
+  const maxPrice = filters.priceRange.max;
 
-  const [minPrice, setMinPrice] = useState<number | string>('');
-  const [maxPrice, setMaxPrice] = useState<number | string>('');
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const category = event.target.value;
@@ -36,31 +36,31 @@ const CatalogFilter = memo(() => {
   };
 
 
-  const handlePriceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === 'minPrice') {
-      setMinPrice(value);
-    } else {
-      setMaxPrice(value);
-    }
-  };
+  // const handlePriceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = event.target;
+  //   if (name === 'minPrice') {
+  //     setMinPrice(value);
+  //   } else {
+  //     setMaxPrice(value);
+  //   }
+  // };
 
-  const handlePriceBlur = () => {
-    const min = Number(minPrice);
-    const max = Number(maxPrice);
-    if (min <= max) {
-      dispatch(setPriceRange({ min, max }));
-    } else {
-      // Обработка ошибки - например, можно показать уведомление
-      console.error('Минимальная цена должна быть меньше или равна максимальной');
-    }
-  };
+  // const handlePriceBlur = () => {
+  //   const min = Number(minPrice);
+  //   const max = Number(maxPrice);
+  //   if (min <= max) {
+  //     dispatch(setPriceRange({ min, max }));
+  //   } else {
+  //     // Обработка ошибки - например, можно показать уведомление
+  //     console.error('Минимальная цена должна быть меньше или равна максимальной');
+  //   }
+  // };
 
-  const handleResetFilters = () => {
-    dispatch(resetFilters());
-    setMinPrice('');
-    setMaxPrice('');
-  };
+  // const handleResetFilters = () => {
+  //   dispatch(resetFilters());
+  //   setMinPrice('');
+  //   setMaxPrice('');
+  // };
 
 
   return (
@@ -76,9 +76,9 @@ const CatalogFilter = memo(() => {
                   type="number"
                   name="minPrice"
                   placeholder="от"
-                  value={minPrice}
-                  onChange={handlePriceInputChange}
-                  onBlur={handlePriceBlur}
+                  value={minPrice === null ? '' : minPrice}
+                  /*onChange={handlePriceInputChange}
+                  onBlur={handlePriceBlur}*/
                 />
               </label>
             </div>
@@ -88,9 +88,9 @@ const CatalogFilter = memo(() => {
                   type="number"
                   name="maxPrice"
                   placeholder="до"
-                  value={maxPrice}
-                  onChange={handlePriceInputChange}
-                  onBlur={handlePriceBlur}
+                  value={maxPrice === null ? '' : maxPrice}
+                  /*onChange={handlePriceInputChange}
+                  onBlur={handlePriceBlur}*/
                 />
               </label>
             </div>
@@ -215,7 +215,7 @@ const CatalogFilter = memo(() => {
         <button
           className="btn catalog-filter__reset-btn"
           type="reset"
-          onClick={handleResetFilters}
+          /*onClick={handleResetFilters}*/
         >
           Сбросить фильтры
         </button>

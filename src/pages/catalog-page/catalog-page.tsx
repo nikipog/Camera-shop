@@ -1,6 +1,6 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import CatalogCardsContainer from '../../components/catalog-cards-container/catalog-cards-container';
-import { useAppSelector } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { selectProducts, selectProductsStatus } from '../../store/selectors/products-selectors';
 import { RequestStatus } from '../../const';
 import { useModalContext } from '../../hooks/modal-context';
@@ -10,9 +10,12 @@ import { useSelectedProduct } from '../../hooks/select-product';
 import { Helmet } from 'react-helmet-async';
 import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import { RootState } from '../../types/store';
+import { setPriceRange } from '../../store/slices/filters/filter';
 
+const NO_PRODUCTS = 0;
 
 const CatalogPage = memo((): JSX.Element => {
+  const dispatch = useAppDispatch();
   const products = useAppSelector(selectProducts);
   console.log(products);
   const status = useAppSelector(selectProductsStatus);
@@ -32,10 +35,29 @@ const CatalogPage = memo((): JSX.Element => {
     const matchesCategory = !filters.category || product.category === filters.category;
     const matchesType = filters.type.length === 0 || filters.type.includes(product.type);
     const matchesLevel = filters.level.length === 0 || filters.level.includes(product.level);
-    const matchesPrice = product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
+    //const matchesPrice = product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
 
-    return matchesCategory && matchesType && matchesLevel && matchesPrice;
+    return matchesCategory && matchesType && matchesLevel /*&& matchesPrice*/;
   });
+
+  useEffect(() => {
+
+    if (filteredProducts.length === NO_PRODUCTS) {
+      return;
+    }
+
+    const prevMinPriceValue = filters.priceRange.min;
+    const prevMaxPriceValue = filters.priceRange.max;
+
+    const productPrices = filteredProducts.map((product: Product) => product.price);
+    const min = Math.min(...productPrices);
+    const max = Math.max(...productPrices);
+    if (prevMinPriceValue === min && prevMaxPriceValue === max) {
+      return;
+    }
+    dispatch(setPriceRange({ min, max }));
+
+  },[dispatch, filteredProducts, filters.priceRange.max, filters.priceRange.min]);
 
 
   return (

@@ -4,14 +4,14 @@ interface FilterState {
   category: string | null;
   type: string[];
   level: string[];
-  priceRange: { min: number; max: number };
+  priceRange: { min: number | null; max: number | null };
 }
 
 const initialState: FilterState = {
   category: null,
   type: [],
   level: [],
-  priceRange: { min: 0, max: 100000000 },
+  priceRange: { min: null, max: null },
 };
 
 const filterSlice = createSlice({
@@ -42,7 +42,7 @@ const filterSlice = createSlice({
       state.category = null;
       state.type = [];
       state.level = [];
-      state.priceRange = { min: 0, max: 0 };
+      state.priceRange = { min: null, max: null };
     }
   },
 });
