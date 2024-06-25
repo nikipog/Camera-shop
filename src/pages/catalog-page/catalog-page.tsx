@@ -1,23 +1,21 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import CatalogCardsContainer from '../../components/catalog-cards-container/catalog-cards-container';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import { selectProducts, selectProductsStatus } from '../../store/selectors/products-selectors';
-import { RequestStatus } from '../../const';
+import { setPriceRange } from '../../store/slices/filters/filter';
 import { useModalContext } from '../../hooks/modal-context';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { useSelectedProduct } from '../../hooks/select-product';
 import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
-import { useSelectedProduct } from '../../hooks/select-product';
-import { Helmet } from 'react-helmet-async';
-import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import { RootState } from '../../types/store';
-import { setPriceRange } from '../../store/slices/filters/filter';
+import { EmptyFilters, RequestStatus } from '../../const';
 
-const NO_PRODUCTS = 0;
 
 const CatalogPage = memo((): JSX.Element => {
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectProducts);
-  console.log(products);
   const status = useAppSelector(selectProductsStatus);
 
   const { openModal } = useModalContext();
@@ -33,31 +31,34 @@ const CatalogPage = memo((): JSX.Element => {
 
   const filteredProducts = products.filter((product: Product) => {
     const matchesCategory = !filters.category || product.category === filters.category;
-    const matchesType = filters.type.length === 0 || filters.type.includes(product.type);
-    const matchesLevel = filters.level.length === 0 || filters.level.includes(product.level);
-    //const matchesPrice = product.price >= filters.priceRange.min && product.price <= filters.priceRange.max;
+    const matchesType = filters.type.length === EmptyFilters.NoFilters || filters.type.includes(product.type);
+    const matchesLevel = filters.level.length === EmptyFilters.NoFilters || filters.level.includes(product.level);
+    const matchesPrice = (filters.priceInputValues.minPriceInputValue === null || product.price >= filters.priceInputValues.minPriceInputValue) &&
+    (filters.priceInputValues.maxPriceInputValue === null || product.price <= filters.priceInputValues.maxPriceInputValue);
 
-    return matchesCategory && matchesType && matchesLevel /*&& matchesPrice*/;
+    return matchesCategory && matchesType && matchesLevel && matchesPrice;
   });
+
+  const productPrices = useMemo(() => filteredProducts.map((product: Product) => product.price), [filteredProducts]);
+  const min = useMemo(() => Math.min(...productPrices), [productPrices]);
+  const max = useMemo(() => Math.max(...productPrices), [productPrices]);
 
   useEffect(() => {
 
-    if (filteredProducts.length === NO_PRODUCTS) {
+    if (filteredProducts.length === EmptyFilters.NoProducts) {
       return;
     }
 
     const prevMinPriceValue = filters.priceRange.min;
     const prevMaxPriceValue = filters.priceRange.max;
 
-    const productPrices = filteredProducts.map((product: Product) => product.price);
-    const min = Math.min(...productPrices);
-    const max = Math.max(...productPrices);
+
     if (prevMinPriceValue === min && prevMaxPriceValue === max) {
       return;
     }
     dispatch(setPriceRange({ min, max }));
 
-  },[dispatch, filteredProducts, filters.priceRange.max, filters.priceRange.min]);
+  },[dispatch, filteredProducts, filters.priceRange.max, filters.priceRange.min, min, max]);
 
 
   return (

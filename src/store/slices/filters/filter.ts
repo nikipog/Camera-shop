@@ -5,6 +5,7 @@ interface FilterState {
   type: string[];
   level: string[];
   priceRange: { min: number | null; max: number | null };
+  priceInputValues: { minPriceInputValue: number | null; maxPriceInputValue: number | null };
 }
 
 const initialState: FilterState = {
@@ -12,6 +13,7 @@ const initialState: FilterState = {
   type: [],
   level: [],
   priceRange: { min: null, max: null },
+  priceInputValues: { minPriceInputValue: null, maxPriceInputValue: null },
 };
 
 const filterSlice = createSlice({
@@ -38,15 +40,19 @@ const filterSlice = createSlice({
     setPriceRange(state, action: PayloadAction<{ min: number; max: number }>) {
       state.priceRange = action.payload;
     },
+    setPriceInputValues(state, action: PayloadAction<{ minPriceInputValue: number | null; maxPriceInputValue: number | null }>) {
+      state.priceInputValues = action.payload;
+    },
     resetFilters(state) {
       state.category = null;
       state.type = [];
       state.level = [];
       state.priceRange = { min: null, max: null };
+      state.priceInputValues = { minPriceInputValue: null, maxPriceInputValue: null };
     }
   },
 });
 
-export const { setCategory, toggleType, toggleLevel, setPriceRange, resetFilters } = filterSlice.actions;
+export const { setCategory, toggleType, toggleLevel, setPriceRange, resetFilters, setPriceInputValues } = filterSlice.actions;
 export {filterSlice};
 export default filterSlice.reducer;

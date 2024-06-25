@@ -1,26 +1,37 @@
-import { memo } from 'react';
-import { useSelector } from 'react-redux';
+import { memo, useEffect, useState } from 'react';
 import { RootState } from '../../types/store';
-import { setCategory, toggleType, toggleLevel, setPriceRange, resetFilters } from '../../store/slices/filters/filter';
-import { useAppDispatch } from '../../hooks/store';
+import { setCategory, toggleType, toggleLevel, resetFilters, setPriceInputValues } from '../../store/slices/filters/filter';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { toast } from 'react-toastify';
+import { ForbiddenVideocategories, PriceInputNames, ToastifyMessages } from '../../const';
 
 
 const CatalogFilter = memo(() => {
 
+  const VIDEOCAMERA_CATEGORY = 'Видеокамера';
+
   const dispatch = useAppDispatch();
-  const filters = useSelector((state: RootState) => state.filters);
+  const filters = useAppSelector((state: RootState) => state.filters);
   const minPrice = filters.priceRange.min;
   const maxPrice = filters.priceRange.max;
+
+  const [localMinPrice, setLocalMinPrice] = useState<number | null>(minPrice);
+  const [localMaxPrice, setLocalMaxPrice] = useState<number | null>(maxPrice);
+
+  useEffect(() => {
+    setLocalMinPrice(minPrice);
+    setLocalMaxPrice(maxPrice);
+  }, [minPrice, maxPrice]);
 
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const category = event.target.value;
     dispatch(setCategory(category));
 
-    if (category === 'Видеокамера') {
+    if (category === VIDEOCAMERA_CATEGORY) {
       // Проверяем текущие фильтры и сбрасываем только недоступные
       filters.type.forEach((type) => {
-        if (type === 'Моментальная' || type === 'Плёночная') {
+        if (type === ForbiddenVideocategories.InstantType || type === ForbiddenVideocategories.FilmType) {
           dispatch(toggleType(type));
         }
       });
@@ -36,31 +47,63 @@ const CatalogFilter = memo(() => {
   };
 
 
-  // const handlePriceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = event.target;
-  //   if (name === 'minPrice') {
-  //     setMinPrice(value);
-  //   } else {
-  //     setMaxPrice(value);
-  //   }
-  // };
+  const handlePriceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    if (name === 'minPrice') {
+      setLocalMinPrice(Number(value));
 
-  // const handlePriceBlur = () => {
-  //   const min = Number(minPrice);
-  //   const max = Number(maxPrice);
-  //   if (min <= max) {
-  //     dispatch(setPriceRange({ min, max }));
-  //   } else {
-  //     // Обработка ошибки - например, можно показать уведомление
-  //     console.error('Минимальная цена должна быть меньше или равна максимальной');
-  //   }
-  // };
+    } else {
+      setLocalMaxPrice(Number(value));
+    }
+  };
 
-  // const handleResetFilters = () => {
-  //   dispatch(resetFilters());
-  //   setMinPrice('');
-  //   setMaxPrice('');
-  // };
+  const { minPriceInputValue, maxPriceInputValue } = useAppSelector((state: RootState) => state.filters.priceInputValues);
+
+
+  const handlePriceBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const newPrice = Number(value);
+
+    if (name === PriceInputNames.MinPrice) {
+      if (maxPrice !== null && newPrice > maxPrice) {
+        toast.error(ToastifyMessages.PriceFromExceedsToError);
+        setLocalMinPrice(minPrice); // Сброс цены к предыдущему значению
+        return;
+      }
+
+      if (minPrice !== null && newPrice < minPrice) {
+        toast.error(ToastifyMessages.InputValueLessThanPriceTo(minPrice));
+        setLocalMinPrice(minPrice);
+        return;
+      }
+
+      if (newPrice !== minPriceInputValue && (maxPrice === null || newPrice <= maxPrice)) {
+        dispatch(setPriceInputValues({ minPriceInputValue: newPrice, maxPriceInputValue }));
+      }
+    } else if (name === PriceInputNames.MaxPrice) {
+      if (minPrice !== null && newPrice < minPrice) {
+        toast.error(ToastifyMessages.PriceToLessThenFromError);
+        setLocalMaxPrice(maxPrice);
+        return;
+      }
+      if (maxPrice !== null && newPrice > maxPrice) {
+        toast.error(ToastifyMessages.InputValueExceedsToError(maxPrice));
+        setLocalMaxPrice(maxPrice);
+        return;
+      }
+
+      if (newPrice !== maxPriceInputValue) {
+        dispatch(setPriceInputValues({ minPriceInputValue, maxPriceInputValue: newPrice }));
+      }
+    }
+  };
+
+
+  const handleResetFilters = () => {
+    dispatch(resetFilters());
+    setLocalMinPrice(minPrice);
+    setLocalMaxPrice(maxPrice);
+  };
 
 
   return (
@@ -76,9 +119,9 @@ const CatalogFilter = memo(() => {
                   type="number"
                   name="minPrice"
                   placeholder="от"
-                  value={minPrice === null ? '' : minPrice}
-                  /*onChange={handlePriceInputChange}
-                  onBlur={handlePriceBlur}*/
+                  value={localMinPrice === null ? '' : localMinPrice}
+                  onChange={handlePriceInputChange}
+                  onBlur={handlePriceBlur}
                 />
               </label>
             </div>
@@ -88,9 +131,9 @@ const CatalogFilter = memo(() => {
                   type="number"
                   name="maxPrice"
                   placeholder="до"
-                  value={maxPrice === null ? '' : maxPrice}
-                  /*onChange={handlePriceInputChange}
-                  onBlur={handlePriceBlur}*/
+                  value={localMaxPrice === null ? '' : localMaxPrice}
+                  onChange={handlePriceInputChange}
+                  onBlur={handlePriceBlur}
                 />
               </label>
             </div>
@@ -215,7 +258,7 @@ const CatalogFilter = memo(() => {
         <button
           className="btn catalog-filter__reset-btn"
           type="reset"
-          /*onClick={handleResetFilters}*/
+          onClick={handleResetFilters}
         >
           Сбросить фильтры
         </button>
