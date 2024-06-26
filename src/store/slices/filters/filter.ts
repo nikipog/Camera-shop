@@ -43,6 +43,9 @@ const filterSlice = createSlice({
     setPriceInputValues(state, action: PayloadAction<{ minPriceInputValue: number | null; maxPriceInputValue: number | null }>) {
       state.priceInputValues = action.payload;
     },
+    resetCategory(state) {
+      state.category = null;
+    },
     resetFilters(state) {
       state.category = null;
       state.type = [];
@@ -53,6 +56,6 @@ const filterSlice = createSlice({
   },
 });
 
-export const { setCategory, toggleType, toggleLevel, setPriceRange, resetFilters, setPriceInputValues } = filterSlice.actions;
+export const { setCategory, toggleType, toggleLevel, setPriceRange, resetFilters, setPriceInputValues, resetCategory } = filterSlice.actions;
 export {filterSlice};
 export default filterSlice.reducer;

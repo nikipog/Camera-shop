@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from 'react';
 import { RootState } from '../../types/store';
-import { setCategory, toggleType, toggleLevel, resetFilters, setPriceInputValues } from '../../store/slices/filters/filter';
+import { setCategory, toggleType, toggleLevel, resetFilters, setPriceInputValues, resetCategory } from '../../store/slices/filters/filter';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { toast } from 'react-toastify';
 import { ForbiddenVideocategories, PriceInputNames, ToastifyMessages } from '../../const';
@@ -26,6 +26,7 @@ const CatalogFilter = memo(() => {
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const category = event.target.value;
+
     dispatch(setCategory(category));
 
     if (category === VIDEOCAMERA_CATEGORY) {
@@ -36,6 +37,12 @@ const CatalogFilter = memo(() => {
         }
       });
     }
+  };
+
+  const handleCategoryClick = (event: React.MouseEvent<HTMLInputElement>) => {
+    const category = event.currentTarget.value;
+    dispatch(resetCategory());
+    dispatch(setCategory(category));
   };
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,8 +67,7 @@ const CatalogFilter = memo(() => {
   const { minPriceInputValue, maxPriceInputValue } = useAppSelector((state: RootState) => state.filters.priceInputValues);
 
 
-  const handlePriceBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+  const handlePriceChange = (name: string, value: string) => {
     const newPrice = Number(value);
 
     if (name === PriceInputNames.MinPrice) {
@@ -98,6 +104,23 @@ const CatalogFilter = memo(() => {
     }
   };
 
+  const handlePriceBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handlePriceChange(event.target.name, event.target.value);
+  };
+
+  const handlePriceInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handlePriceChange(event.currentTarget.name, event.currentTarget.value);
+    }
+  };
+
+
+  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter') {
+      event.currentTarget.click();
+    }
+  };
+
 
   const handleResetFilters = () => {
     dispatch(resetFilters());
@@ -122,6 +145,7 @@ const CatalogFilter = memo(() => {
                   value={localMinPrice === null ? '' : localMinPrice}
                   onChange={handlePriceInputChange}
                   onBlur={handlePriceBlur}
+                  onKeyDown={handlePriceInputKeyDown}
                 />
               </label>
             </div>
@@ -134,6 +158,7 @@ const CatalogFilter = memo(() => {
                   value={localMaxPrice === null ? '' : localMaxPrice}
                   onChange={handlePriceInputChange}
                   onBlur={handlePriceBlur}
+                  onKeyDown={handlePriceInputKeyDown}
                 />
               </label>
             </div>
@@ -148,6 +173,8 @@ const CatalogFilter = memo(() => {
                 name="category"
                 value="Фотоаппарат"
                 onChange={handleCategoryChange}
+                onKeyDown={handleEnterKeyDown}
+                onClick={handleCategoryClick}
               />
               <span className="custom-radio__icon" />
               <span className="custom-radio__label">Фотокамера</span>
@@ -160,6 +187,8 @@ const CatalogFilter = memo(() => {
                 name="category"
                 value="Видеокамера"
                 onChange={handleCategoryChange}
+                onKeyDown={handleEnterKeyDown}
+                onClick={handleCategoryClick}
               />
               <span className="custom-radio__icon" />
               <span className="custom-radio__label">Видеокамера</span>
@@ -174,6 +203,7 @@ const CatalogFilter = memo(() => {
                 type="checkbox"
                 name="Цифровая"
                 onChange={handleTypeChange}
+                onKeyDown={handleEnterKeyDown}
               />
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Цифровая</span>
@@ -187,6 +217,7 @@ const CatalogFilter = memo(() => {
                 onChange={handleTypeChange}
                 checked={filters.type.includes('Плёночная')}
                 disabled={filters.category === 'Видеокамера'}
+                onKeyDown={handleEnterKeyDown}
               />
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Плёночная</span>
@@ -200,6 +231,7 @@ const CatalogFilter = memo(() => {
                 onChange={handleTypeChange}
                 checked={filters.type.includes('Моментальная')}
                 disabled={filters.category === 'Видеокамера'}
+                onKeyDown={handleEnterKeyDown}
 
               />
               <span className="custom-checkbox__icon" />
@@ -212,6 +244,7 @@ const CatalogFilter = memo(() => {
                 type="checkbox"
                 name="Коллекционная"
                 onChange={handleTypeChange}
+                onKeyDown={handleEnterKeyDown}
               />
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Коллекционная</span>
@@ -226,6 +259,7 @@ const CatalogFilter = memo(() => {
                 type="checkbox"
                 name="Нулевой"
                 onChange={handleLevelChange}
+                onKeyDown={handleEnterKeyDown}
               />
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Нулевой</span>
@@ -237,6 +271,7 @@ const CatalogFilter = memo(() => {
                 type="checkbox"
                 name="Любительский"
                 onChange={handleLevelChange}
+                onKeyDown={handleEnterKeyDown}
               />
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Любительский</span>
@@ -248,6 +283,7 @@ const CatalogFilter = memo(() => {
                 type="checkbox"
                 name="Профессиональный"
                 onChange={handleLevelChange}
+                onKeyDown={handleEnterKeyDown}
 
               />
               <span className="custom-checkbox__icon" />
@@ -259,6 +295,7 @@ const CatalogFilter = memo(() => {
           className="btn catalog-filter__reset-btn"
           type="reset"
           onClick={handleResetFilters}
+          onKeyDown={handleEnterKeyDown}
         >
           Сбросить фильтры
         </button>

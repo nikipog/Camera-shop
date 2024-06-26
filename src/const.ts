@@ -18,9 +18,9 @@ export const ToastifyMessages = {
   PriceFromExceedsToError: () => 'Цена "от" не может превышать цену в поле "до"',
   PriceToLessThenFromError: () => 'Цена "до" не может быть меньше цены в поле "от"',
   InputValueLessThanPriceTo: (minPriceValue: number | null) =>
-    `Минимальная цена товаров от ${minPriceValue !== null ? minPriceValue : ''} руб.`,
+    `Для выбранных фильтров минимальная цена товаров от ${minPriceValue !== null ? minPriceValue : ''} руб.`,
   InputValueExceedsToError: (maxPriceValue: number | null) =>
-    `Максимальная цена товаров до ${maxPriceValue !== null ? maxPriceValue : ''} руб. `
+    `Для выбранных фильтров максимальная цена товаров ${maxPriceValue !== null ? maxPriceValue : ''} руб. `
 } as const;
 
 export const MAX_RATING_COUNT = 5;
