@@ -11,6 +11,7 @@ import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
 import { RootState } from '../../types/store';
 import { EmptyFilters, RequestStatus } from '../../const';
+import CatalogSort from '../../components/catalog-sort/cataog-sort';
 
 
 const CatalogPage = memo((): JSX.Element => {
@@ -121,6 +122,7 @@ const CatalogPage = memo((): JSX.Element => {
                 <CatalogFilter />
               </div>
               <div className="catalog__content">
+                <CatalogSort/>
                 {status === RequestStatus.Loading ? (
                   <div> Загрузка ... </div>
                 ) : (
