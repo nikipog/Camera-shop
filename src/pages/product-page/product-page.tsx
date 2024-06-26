@@ -56,7 +56,7 @@ const ProductPage = memo((): JSX.Element => {
   if (!product) {
     return <div>No product found</div>;
   }
-  const { previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, name, reviewCount, price, rating, category, id: productId, description, vendorCode, type, level } = product;
+  const { previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, name, reviewCount, price, rating, category, description, vendorCode, type, level } = product;
   return (
     <>
       < main >
