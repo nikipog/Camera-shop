@@ -21,13 +21,13 @@ const sortSlice = createSlice({
     setSortOrder(state, action: PayloadAction<sortOrder>) {
       state.sortOrder = action.payload;
     },
-    resetSorting(state) {
+    resetSort(state) {
       state.sortType = initialState.sortType;
       state.sortOrder = initialState.sortOrder;
     }
   },
 });
 
-export const { setSortType, setSortOrder, resetSorting } = sortSlice.actions;
+export const { setSortType, setSortOrder, resetSort } = sortSlice.actions;
 export { sortSlice };
 export default sortSlice.reducer;

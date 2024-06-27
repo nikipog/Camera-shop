@@ -4,6 +4,7 @@ import { setCategory, toggleType, toggleLevel, resetFilters, setPriceInputValues
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { toast } from 'react-toastify';
 import { ForbiddenVideocategories, PriceInputNames, ToastifyMessages } from '../../const';
+import { resetSort } from '../../store/slices/sort/sort';
 
 
 const CatalogFilter = memo(() => {
@@ -124,6 +125,7 @@ const CatalogFilter = memo(() => {
 
   const handleResetFilters = () => {
     dispatch(resetFilters());
+    dispatch(resetSort());
     setLocalMinPrice(minPrice);
     setLocalMaxPrice(maxPrice);
   };

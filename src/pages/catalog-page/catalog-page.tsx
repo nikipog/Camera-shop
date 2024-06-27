@@ -10,7 +10,7 @@ import { useSelectedProduct } from '../../hooks/select-product';
 import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
 import { RootState } from '../../types/store';
-import { EmptyFilters, RequestStatus } from '../../const';
+import { EmptyFilters, RequestStatus, SortTypesAndOrder } from '../../const';
 import CatalogSort from '../../components/catalog-sort/cataog-sort';
 
 
@@ -30,15 +30,16 @@ const CatalogPage = memo((): JSX.Element => {
 
   const filters = useAppSelector((state: RootState) => state.filters);
 
-  const filteredProducts = products.filter((product: Product) => {
+  const filteredProducts = useMemo(() => products.filter((product: Product) => {
     const matchesCategory = !filters.category || product.category === filters.category;
     const matchesType = filters.type.length === EmptyFilters.NoFilters || filters.type.includes(product.type);
     const matchesLevel = filters.level.length === EmptyFilters.NoFilters || filters.level.includes(product.level);
     const matchesPrice = (filters.priceInputValues.minPriceInputValue === null || product.price >= filters.priceInputValues.minPriceInputValue) &&
-    (filters.priceInputValues.maxPriceInputValue === null || product.price <= filters.priceInputValues.maxPriceInputValue);
+      (filters.priceInputValues.maxPriceInputValue === null || product.price <= filters.priceInputValues.maxPriceInputValue);
 
     return matchesCategory && matchesType && matchesLevel && matchesPrice;
-  });
+  }), [filters.category, filters.level, filters.priceInputValues.maxPriceInputValue, filters.priceInputValues.minPriceInputValue, filters.type, products]);
+
 
   const productPrices = useMemo(() => filteredProducts.map((product: Product) => product.price), [filteredProducts]);
   const min = useMemo(() => Math.min(...productPrices), [productPrices]);
@@ -59,7 +60,21 @@ const CatalogPage = memo((): JSX.Element => {
     }
     dispatch(setPriceRange({ min, max }));
 
-  },[dispatch, filteredProducts, filters.priceRange.max, filters.priceRange.min, min, max]);
+  }, [dispatch, filteredProducts, filters.priceRange.max, filters.priceRange.min, min, max]);
+
+  const sort = useAppSelector((state: RootState) => state.sort);
+
+  const sortedProducts = useMemo(() => {
+    let sortedArray = [...filteredProducts];
+
+    if (sort.sortType === SortTypesAndOrder.SortByPrice) {
+      sortedArray = sortedArray.sort((a, b) => sort.sortOrder === SortTypesAndOrder.SortOrderUp ? a.price - b.price : b.price - a.price);
+    } else if (sort.sortType === SortTypesAndOrder.SortByPopular) {
+      sortedArray = sortedArray.sort((a, b) => sort.sortOrder === SortTypesAndOrder.SortOrderUp ? a.rating - b.rating : b.rating - a.rating);
+    }
+
+    return sortedArray;
+  }, [filteredProducts, sort]);
 
 
   return (
@@ -122,12 +137,12 @@ const CatalogPage = memo((): JSX.Element => {
                 <CatalogFilter />
               </div>
               <div className="catalog__content">
-                <CatalogSort/>
+                <CatalogSort />
                 {status === RequestStatus.Loading ? (
                   <div> Загрузка ... </div>
                 ) : (
                   <CatalogCardsContainer
-                    products={filteredProducts}
+                    products={sortedProducts}
                     onProductClick={handleBuyButtonClick}
                   />
                 )}

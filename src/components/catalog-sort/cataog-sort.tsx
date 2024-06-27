@@ -1,13 +1,23 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { RootState } from '../../types/store';
 import { setSortOrder, setSortType } from '../../store/slices/sort/sort';
 import { sortOrder, sortType } from '../../types/sort';
+import { SortTypesAndOrder } from '../../const';
 
 
 const CatalogSort = memo(() => {
   const stateSort = useAppSelector((state: RootState) => state.sort);
   const dispatch = useAppDispatch();
+
+  const [localSortType, setLocalSortType] = useState<sortType>(SortTypesAndOrder.SortByPrice);
+  const [localSortOrder, setLocalSortOrder] = useState<sortOrder>(SortTypesAndOrder.SortOrderUp);
+
+  useEffect(() => {
+    setLocalSortType(stateSort.sortType);
+    setLocalSortOrder(stateSort.sortOrder);
+  }, [stateSort]);
+
 
   const handleSortTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const currentSortType = event.target.id as sortType;
@@ -35,7 +45,7 @@ const CatalogSort = memo(() => {
                 id="sortPrice"
                 name="sort"
                 onChange={handleSortTypeChange}
-                defaultChecked
+                checked={localSortType === SortTypesAndOrder.SortByPrice}
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
@@ -45,6 +55,7 @@ const CatalogSort = memo(() => {
                 id="sortPopular"
                 name="sort"
                 onChange={handleSortTypeChange}
+                checked={localSortType === SortTypesAndOrder.SortByPopular}
               />
               <label htmlFor="sortPopular">по популярности</label>
             </div>
@@ -58,6 +69,7 @@ const CatalogSort = memo(() => {
                 defaultChecked
                 aria-label="По возрастанию"
                 onChange={handleOrderChange}
+                checked={localSortOrder === SortTypesAndOrder.SortOrderUp}
               />
               <label htmlFor="up">
                 <svg width={16} height={14} aria-hidden="true">
@@ -72,6 +84,7 @@ const CatalogSort = memo(() => {
                 name="sort-icon"
                 aria-label="По убыванию"
                 onChange={handleOrderChange}
+                checked={localSortOrder === SortTypesAndOrder.SortOrderDown}
               />
               <label htmlFor="down">
                 <svg width={16} height={14} aria-hidden="true">

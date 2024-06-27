@@ -49,4 +49,11 @@ export const ForbiddenVideocategories = {
   FilmType: 'Плёночная'
 } as const;
 
+export const SortTypesAndOrder = {
+  SortByPrice: 'sortPrice',
+  SortByPopular: 'sortPopular',
+  SortOrderUp: 'up',
+  SortOrderDown: 'down'
+} as const;
+
 
