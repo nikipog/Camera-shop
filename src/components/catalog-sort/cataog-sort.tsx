@@ -1,13 +1,13 @@
 import { memo, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { RootState } from '../../types/store';
 import { setSortOrder, setSortType } from '../../store/slices/sort/sort';
 import { sortOrder, sortType } from '../../types/sort';
 import { SortTypesAndOrder } from '../../const';
+import { selectSort } from '../../store/selectors/sort-selectors';
 
 
 const CatalogSort = memo(() => {
-  const stateSort = useAppSelector((state: RootState) => state.sort);
+  const stateSort = useAppSelector(selectSort);
   const dispatch = useAppDispatch();
 
   const [localSortType, setLocalSortType] = useState<sortType>(SortTypesAndOrder.SortByPrice);
@@ -66,7 +66,6 @@ const CatalogSort = memo(() => {
                 type="radio"
                 id="up"
                 name="sort-icon"
-                defaultChecked
                 aria-label="По возрастанию"
                 onChange={handleOrderChange}
                 checked={localSortOrder === SortTypesAndOrder.SortOrderUp}

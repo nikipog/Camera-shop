@@ -1,0 +1,5 @@
+.form-search__reset.visible {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}

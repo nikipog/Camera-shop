@@ -9,9 +9,10 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { useSelectedProduct } from '../../hooks/select-product';
 import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
-import { RootState } from '../../types/store';
 import { EmptyFilters, RequestStatus, SortTypesAndOrder } from '../../const';
 import CatalogSort from '../../components/catalog-sort/cataog-sort';
+import { selectFilters } from '../../store/selectors/filter-selectors';
+import { selectSort } from '../../store/selectors/sort-selectors';
 
 
 const CatalogPage = memo((): JSX.Element => {
@@ -28,7 +29,7 @@ const CatalogPage = memo((): JSX.Element => {
     scrollController.disableScroll();
   };
 
-  const filters = useAppSelector((state: RootState) => state.filters);
+  const filters = useAppSelector(selectFilters);
 
   const filteredProducts = useMemo(() => products.filter((product: Product) => {
     const matchesCategory = !filters.category || product.category === filters.category;
@@ -62,7 +63,7 @@ const CatalogPage = memo((): JSX.Element => {
 
   }, [dispatch, filteredProducts, filters.priceRange.max, filters.priceRange.min, min, max]);
 
-  const sort = useAppSelector((state: RootState) => state.sort);
+  const sort = useAppSelector(selectSort);
 
   const sortedProducts = useMemo(() => {
     let sortedArray = [...filteredProducts];

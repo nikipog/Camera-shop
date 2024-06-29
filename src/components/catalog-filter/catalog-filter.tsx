@@ -1,10 +1,10 @@
 import { memo, useEffect, useState } from 'react';
-import { RootState } from '../../types/store';
 import { setCategory, toggleType, toggleLevel, resetFilters, setPriceInputValues, resetCategory } from '../../store/slices/filters/filter';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { toast } from 'react-toastify';
 import { ForbiddenVideocategories, PriceInputNames, ToastifyMessages } from '../../const';
 import { resetSort } from '../../store/slices/sort/sort';
+import { selectFilters, selectPriceInputValues } from '../../store/selectors/filter-selectors';
 
 
 const CatalogFilter = memo(() => {
@@ -12,7 +12,7 @@ const CatalogFilter = memo(() => {
   const VIDEOCAMERA_CATEGORY = 'Видеокамера';
 
   const dispatch = useAppDispatch();
-  const filters = useAppSelector((state: RootState) => state.filters);
+  const filters = useAppSelector(selectFilters);
   const minPrice = filters.priceRange.min;
   const maxPrice = filters.priceRange.max;
 
@@ -65,7 +65,7 @@ const CatalogFilter = memo(() => {
     }
   };
 
-  const { minPriceInputValue, maxPriceInputValue } = useAppSelector((state: RootState) => state.filters.priceInputValues);
+  const { minPriceInputValue, maxPriceInputValue } = useAppSelector(selectPriceInputValues);
 
 
   const handlePriceChange = (name: string, value: string) => {

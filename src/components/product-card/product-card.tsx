@@ -48,7 +48,7 @@ const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.El
           </p>
         </div>
         <p className="product-card__title">
-          {name.includes('Ретрокамера') ? `${name}` : `${category} ${name}$`}
+          {name.includes('Ретрокамера') ? `${name}` : `${category} ${name}`}
         </p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>{price.toLocaleString()} ₽
