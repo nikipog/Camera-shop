@@ -6,6 +6,7 @@ import { productSlice } from './slices/product/product';
 import { reviewsSlice } from './slices/reviews/reviews';
 import { filterSlice } from './slices/filters/filter';
 import { sortSlice } from './slices/sort/sort';
+import { paginationSlice } from './slices/pagination/pagination';
 
 
 const reducer = combineReducers({
@@ -14,7 +15,8 @@ const reducer = combineReducers({
   [productSlice.name]: productSlice.reducer,
   [reviewsSlice.name]: reviewsSlice.reducer,
   [filterSlice.name]: filterSlice.reducer,
-  [sortSlice.name]: sortSlice.reducer
+  [sortSlice.name]: sortSlice.reducer,
+  [paginationSlice.name]: paginationSlice.reducer
 });
 
 

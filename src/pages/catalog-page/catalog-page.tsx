@@ -13,12 +13,22 @@ import { EmptyFilters, RequestStatus, SortTypesAndOrder } from '../../const';
 import CatalogSort from '../../components/catalog-sort/cataog-sort';
 import { selectFilters } from '../../store/selectors/filter-selectors';
 import { selectSort } from '../../store/selectors/sort-selectors';
+import Pagination from '../../components/pagination/pagination';
+import { selectCurrentPage, selectMaxProductsPerPage } from '../../store/selectors/pagination-selectors';
+import { setCurrentPage, setTotalPages } from '../../store/slices/pagination/pagination';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const CatalogPage = memo((): JSX.Element => {
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectProducts);
   const status = useAppSelector(selectProductsStatus);
+  const currentPage = useAppSelector(selectCurrentPage);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+
+  const maxProductsPerPage = useAppSelector(selectMaxProductsPerPage);
 
   const { openModal } = useModalContext();
   const { setSelectedProduct } = useSelectedProduct();
@@ -28,6 +38,16 @@ const CatalogPage = memo((): JSX.Element => {
     openModal(modalName);
     scrollController.disableScroll();
   };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const pageParam = searchParams.get('page');
+    const pageNumber = pageParam ? parseInt(pageParam, 10) : 1;
+
+    if (!isNaN(pageNumber) && pageNumber !== currentPage) {
+      dispatch(setCurrentPage(pageNumber));
+    }
+  }, [dispatch, location.search, currentPage]);
 
   const filters = useAppSelector(selectFilters);
 
@@ -41,6 +61,16 @@ const CatalogPage = memo((): JSX.Element => {
     return matchesCategory && matchesType && matchesLevel && matchesPrice;
   }), [filters.category, filters.level, filters.priceInputValues.maxPriceInputValue, filters.priceInputValues.minPriceInputValue, filters.type, products]);
 
+  useEffect(() => {
+    const totalPages = Math.ceil(filteredProducts.length / maxProductsPerPage);
+
+    if (currentPage > totalPages) {
+      dispatch(setCurrentPage(1));
+      navigate('?page=1');
+    } else {
+      navigate(`?page=${currentPage}`);
+    }
+  }, [filteredProducts, currentPage, maxProductsPerPage, navigate, dispatch]);
 
   const productPrices = useMemo(() => filteredProducts.map((product: Product) => product.price), [filteredProducts]);
   const min = useMemo(() => Math.min(...productPrices), [productPrices]);
@@ -77,6 +107,23 @@ const CatalogPage = memo((): JSX.Element => {
     return sortedArray;
   }, [filteredProducts, sort]);
 
+  const totalPages = Math.ceil(sortedProducts.length / maxProductsPerPage);
+  const startPaginationIndex = (currentPage - 1) * maxProductsPerPage;
+  const endPaginationIndex = startPaginationIndex + maxProductsPerPage;
+
+  useEffect(() => {
+
+    dispatch(setTotalPages(totalPages));
+  }, [dispatch, totalPages]);
+
+  const sortedProductsWithPagination = sortedProducts.slice(startPaginationIndex, endPaginationIndex);
+
+  const onPageChange = (event: React.MouseEvent<HTMLLIElement>) => {
+
+    console.log(event.currentTarget.dataset);
+    const newPage = Number(event.currentTarget.dataset.page);
+    dispatch(setCurrentPage(newPage));
+  };
 
   return (
     < main >
@@ -143,10 +190,14 @@ const CatalogPage = memo((): JSX.Element => {
                   <div> Загрузка ... </div>
                 ) : (
                   <CatalogCardsContainer
-                    products={sortedProducts}
+                    products={sortedProductsWithPagination}
                     onProductClick={handleBuyButtonClick}
                   />
                 )}
+                {products.length >= maxProductsPerPage &&
+                  <Pagination
+                    onPageChange={onPageChange}
+                  />}
               </div>
             </div>
           </div>
