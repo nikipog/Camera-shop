@@ -56,4 +56,10 @@ export const SortTypesAndOrder = {
   SortOrderDown: 'down'
 } as const;
 
+export const PaginationConstants = {
+  NoGroups : 0,
+  FirstPage : 1,
+  AdditionalPages : 2,
+  PagesPerGroup : 3,
+} as const;
 
