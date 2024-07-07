@@ -57,13 +57,14 @@ const CatalogFilter = memo(() => {
 
   const handlePriceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (name === 'minPrice') {
-      setLocalMinPrice(Number(value));
 
+    if (name === 'minPrice') {
+      setLocalMinPrice(value === '' ? null : Number(value)); // Изменение
     } else {
-      setLocalMaxPrice(Number(value));
+      setLocalMaxPrice(value === '' ? null : Number(value)); // Изменение
     }
   };
+
 
   const { minPriceInputValue, maxPriceInputValue } = useAppSelector(selectPriceInputValues);
 

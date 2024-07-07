@@ -50,7 +50,7 @@ const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.El
         <p className="product-card__title">
           {name.includes('Ретрокамера') ? `${name}` : `${category} ${name}`}
         </p>
-        <p className="product-card__price">
+        <p className="product-card__price" data-testid="product-price">
           <span className="visually-hidden">Цена:</span>{price.toLocaleString()} ₽
         </p>
       </div>
