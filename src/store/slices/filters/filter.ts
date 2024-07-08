@@ -8,7 +8,7 @@ interface FilterState {
   priceInputValues: { minPriceInputValue: number | null; maxPriceInputValue: number | null };
 }
 
-const initialState: FilterState = {
+export const initialState: FilterState = {
   category: null,
   type: [],
   level: [],
@@ -59,3 +59,5 @@ const filterSlice = createSlice({
 export const { setCategory, toggleType, toggleLevel, setPriceRange, resetFilters, setPriceInputValues, resetCategory } = filterSlice.actions;
 export {filterSlice};
 export default filterSlice.reducer;
+
+

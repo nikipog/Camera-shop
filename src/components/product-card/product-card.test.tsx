@@ -1,4 +1,4 @@
-import { fireEvent, MatcherFunction, screen } from '@testing-library/react';
+import { MatcherFunction, screen } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import ProductCard from './product-card';
 import { withMemoryAndStoreWrapper } from '../../utils/mock-component';

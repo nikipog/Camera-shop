@@ -41,7 +41,6 @@ function CatalogCallModal(): JSX.Element | null {
           tel: formattedPhone,
         }
       }))
-        .unwrap()
         .then(() => {
           handleCloseModal();
         })
@@ -110,7 +109,6 @@ function CatalogCallModal(): JSX.Element | null {
                 name="user-tel"
                 placeholder="Введите ваш номер"
                 required
-                //value={phone}
                 onInput={handlePhoneInput}
                 onKeyDown={handlePhoneKeyDown}
                 onPaste={handlePhonePaste}
@@ -150,34 +148,3 @@ function CatalogCallModal(): JSX.Element | null {
 }
 
 export default CatalogCallModal;
-
-// const isIntermediateValidPhoneNumberPlusSeven = (phoneNumber: string): boolean => {
-//   const regex = /^(\+?7|8)?9\d{9}$/;
-//   return regex.test(phoneNumber);
-// };
-
-// const isIntermediateValidPhoneNumberEight = (phoneNumber: string): boolean => {
-//   const regex = /^(\+?7|8)?9\d{9}$/;
-//   return regex.test(phoneNumber);
-// };
-
-// const isValidPhoneNumber = (phoneNumber: string): boolean => {
-//   const regex = /^(?:\+7|8)\s?\(?9\d{2}\)?\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/;
-//   return regex.test(phoneNumber);
-// };
-
-// const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
-//   const value = event.target.value;
-
-//   if (value.startsWith('+') && isIntermediateValidPhoneNumberPlusSeven(value)) {
-//     setPhone(value);
-//     setError('');
-//   } else if (value.startsWith('8') && isIntermediateValidPhoneNumberEight(value)) {
-//     setPhone(value);
-//     setError('');
-//   } else if (value.length >= 11 && !isValidPhoneNumber(value)) {
-//     setError('Введите номер в формате +7(9XX)XXX-XX-XX или 8(9XX)XXX-XX-XX');
-//   } else {
-//     setError('');
-//   }
-// };

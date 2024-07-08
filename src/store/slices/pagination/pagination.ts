@@ -7,7 +7,7 @@ interface PaginationState {
   totalPages: number | null;
 }
 
-const initialState: PaginationState = {
+export const initialState: PaginationState = {
   currentPage: 1,
   maxProductsPerPage: 9,
   totalPages: null,

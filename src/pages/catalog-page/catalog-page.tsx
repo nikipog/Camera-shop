@@ -10,7 +10,7 @@ import { useSelectedProduct } from '../../hooks/select-product';
 import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
 import { EmptyFilters, RequestStatus, SortTypesAndOrder } from '../../const';
-import CatalogSort from '../../components/catalog-sort/cataog-sort';
+import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import { selectFilters } from '../../store/selectors/filter-selectors';
 import { selectSort } from '../../store/selectors/sort-selectors';
 import Pagination from '../../components/pagination/pagination';
