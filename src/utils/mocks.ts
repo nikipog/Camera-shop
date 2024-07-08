@@ -69,17 +69,17 @@ export const MOCK_PRODUCT: Product = {
   reviewCount: 20
 };
 
-export const MOCK_REVIEWS = [
-  {
-    id: 'f1d10ddd-2a21-4f71-9e1e-5f511703fbdd',
-    createAt: '2022-07-09T13:24:57.980Z',
-    cameraId: 1,
-    userName: 'Кирилл',
-    advantage: 'Легкая в плане веса, удобная в интерфейсе',
-    disadvantage: 'Быстро садиться зарядка',
-    review: 'Это моя первая камера. Я в восторге, нареканий нет',
-    rating: 5
-  }];
+export const MOCK_REVIEW =
+{
+  id: 'f1d10ddd-2a21-4f71-9e1e-5f511703fbdd',
+  createAt: '2022-07-09T13:24:57.980Z',
+  cameraId: 1,
+  userName: 'Кирилл',
+  advantage: 'Легкая в плане веса, удобная в интерфейсе',
+  disadvantage: 'Быстро садиться зарядка',
+  review: 'Это моя первая камера. Я в восторге, нареканий нет',
+  rating: 4
+};
 
 
 export const MOCK_ORDER = {
@@ -87,5 +87,90 @@ export const MOCK_ORDER = {
   coupon: null,
   tel: '+79998887766'
 };
+
+export const mockReviews =
+  [
+    {
+      id: '1',
+      createAt: '2022-07-09T13:24:57.980Z',
+      cameraId: 1,
+      userName: 'Кирилл',
+      advantage: 'Легкая в плане веса, удобная в интерфейсе',
+      disadvantage: 'Быстро садиться зарядка',
+      review: 'Это моя первая камера. Я в восторге, нареканий нет',
+      rating: 4
+    },
+    {
+      id: '2',
+      createAt: '2022-07-09T13:24:57.980Z',
+      cameraId: 1,
+      userName: 'Кирилл',
+      advantage: 'Легкая в плане веса, удобная в интерфейсе',
+      disadvantage: 'Быстро садиться зарядка',
+      review: 'Это моя 2 камера. Я в восторге, нареканий нет',
+      rating: 4
+    },
+    {
+      id: '3',
+      createAt: '2022-07-09T13:24:57.980Z',
+      cameraId: 1,
+      userName: 'Кирилл',
+      advantage: 'Легкая в плане веса, удобная в интерфейсе',
+      disadvantage: 'Быстро садиться зарядка',
+      review: 'Это моя 3 камера. Я в восторге, нареканий нет',
+      rating: 4
+    },
+    {
+      id: '4',
+      createAt: '2022-07-09T13:24:57.980Z',
+      cameraId: 1,
+      userName: 'Кирилл',
+      advantage: 'Легкая в плане веса, удобная в интерфейсе',
+      disadvantage: 'Быстро садиться зарядка',
+      review: 'Это моя 4 камера. Я в восторге, нареканий нет',
+      rating: 4
+    },
+    {
+      id: '5',
+      createAt: '2022-07-09T13:24:57.980Z',
+      cameraId: 1,
+      userName: 'Кирилл',
+      advantage: 'Легкая в плане веса, удобная в интерфейсе',
+      disadvantage: 'Быстро садиться зарядка',
+      review: 'Это моя 5 камера. Я в восторге, нареканий нет',
+      rating: 4
+    },
+    {
+      id: '6',
+      createAt: '2022-07-09T13:24:57.980Z',
+      cameraId: 1,
+      userName: 'Кирилл',
+      advantage: 'Легкая в плане веса, удобная в интерфейсе',
+      disadvantage: 'Быстро садиться зарядка',
+      review: 'Это моя 6 камера. Я в восторге, нареканий нет',
+      rating: 4
+    },
+    {
+      id: '7',
+      createAt: '2022-07-09T13:24:57.980Z',
+      cameraId: 1,
+      userName: 'Кирилл',
+      advantage: 'Легкая в плане веса, удобная в интерфейсе',
+      disadvantage: 'Быстро садиться зарядка',
+      review: 'Это моя 7 камера. Я в восторге, нареканий нет',
+      rating: 4
+    },
+    {
+      id: '8',
+      createAt: '2022-07-09T13:24:57.980Z',
+      cameraId: 1,
+      userName: 'Кирилл',
+      advantage: 'Легкая в плане веса, удобная в интерфейсе',
+      disadvantage: 'Быстро садиться зарядка',
+      review: 'Это моя 8 камера. Я в восторге, нареканий нет',
+      rating: 4
+    },
+
+  ];
 
 

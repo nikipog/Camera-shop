@@ -46,4 +46,5 @@ export const productSlice = createSlice({
 });
 
 export const productActions = {...productSlice.actions, fetchProduct}; //асинхронные экшены на получение квеста
+export default productSlice.reducer;
 

@@ -6,7 +6,7 @@ interface SortState {
   sortOrder: sortOrder;
 }
 
-const initialState: SortState = {
+export const initialState: SortState = {
   sortType: 'sortPrice',
   sortOrder: 'up'
 };

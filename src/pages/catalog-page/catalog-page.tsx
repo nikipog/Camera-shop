@@ -10,7 +10,7 @@ import { useSelectedProduct } from '../../hooks/select-product';
 import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
 import { EmptyFilters, RequestStatus, SortTypesAndOrder } from '../../const';
-import CatalogSort from '../../components/catalog-sort/cataog-sort';
+import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import { selectFilters } from '../../store/selectors/filter-selectors';
 import { selectSort } from '../../store/selectors/sort-selectors';
 import Pagination from '../../components/pagination/pagination';
@@ -65,7 +65,7 @@ const CatalogPage = memo((): JSX.Element => {
     const totalPages = Math.ceil(filteredProducts.length / maxProductsPerPage);
 
     if (currentPage > totalPages) {
-      dispatch(setCurrentPage(1));
+
       navigate('?page=1');
     } else {
       navigate(`?page=${currentPage}`);
@@ -119,8 +119,6 @@ const CatalogPage = memo((): JSX.Element => {
   const sortedProductsWithPagination = sortedProducts.slice(startPaginationIndex, endPaginationIndex);
 
   const onPageChange = (event: React.MouseEvent<HTMLLIElement>) => {
-
-    console.log(event.currentTarget.dataset);
     const newPage = Number(event.currentTarget.dataset.page);
     dispatch(setCurrentPage(newPage));
   };

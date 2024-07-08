@@ -40,3 +40,6 @@ export const reviewActions = {
   fetchReviews
 };
 
+export default reviewsSlice.reducer;
+
+

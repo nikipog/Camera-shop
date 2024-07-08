@@ -9,7 +9,7 @@ interface ProductsState {
   status: RequestStatus;
 }
 
-const initialState: ProductsState = {
+export const initialState: ProductsState = {
   products: [],
   status: RequestStatus.Idle
 };
@@ -34,4 +34,6 @@ const productsSlice = createSlice({
 const productsActions = {...productsSlice.actions, fetchAllProducts};
 
 export { productsActions , productsSlice };
+export default productsSlice.reducer;
+
 
