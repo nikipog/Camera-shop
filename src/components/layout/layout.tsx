@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import SearchInputField from '../search-input-field/search-input-field';
+import BasketIcon from '../basket-icon/basket-icon';
 
 function Layout(): JSX.Element {
   return (
@@ -40,6 +41,7 @@ function Layout(): JSX.Element {
             </ul>
           </nav>
           <SearchInputField/>
+          <BasketIcon/>
         </div>
       </header>
       <Outlet/>
