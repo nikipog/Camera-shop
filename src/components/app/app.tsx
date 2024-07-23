@@ -29,10 +29,10 @@ function App(): JSX.Element {
   return (
     <HelmetProvider>
       <ToastContainer />
-      <ModalProvider>
-        <SelectedProductProvider>
-          <ModalManager />
-          <BrowserRouter>
+      <BrowserRouter>
+        <ModalProvider>
+          <SelectedProductProvider>
+            <ModalManager />
             <Routes>
               <Route
                 path={AppRoute.Catalog}
@@ -55,9 +55,9 @@ function App(): JSX.Element {
               />
 
             </Routes>
-          </BrowserRouter>
-        </SelectedProductProvider>
-      </ModalProvider>
+          </SelectedProductProvider>
+        </ModalProvider>
+      </BrowserRouter>
     </HelmetProvider >
   );
 }

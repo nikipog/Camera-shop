@@ -10,8 +10,8 @@ const BasketIcon = memo((): JSX.Element => {
       <svg width={16} height={16} aria-hidden="true">
         <use xlinkHref="#icon-basket" />
       </svg>
+      <span className="header__basket-count">3</span>
     </a>
-
 
   );
 });

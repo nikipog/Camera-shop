@@ -1,6 +1,7 @@
 export enum AppRoute {
   Catalog = '/',
-  Product = '/product/:id'
+  Product = '/product/:id',
+  Cart = '/cart'
 }
 
 export const Endpoint = {
@@ -27,6 +28,8 @@ export const MAX_RATING_COUNT = 5;
 
 export const MODAL_NAMES = {
   CATALOG_CALL_MODAL: 'CatalogCallModal',
+  CATALOG_ADD_MODAL: 'CatalogAddModal',
+  CATALOG_ADD_SUCCESS_MODAL: 'CatalogAddSuccessModal',
 } as const;
 
 export const HttpResponseStatusCodes = {
