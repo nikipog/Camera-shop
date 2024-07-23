@@ -23,6 +23,12 @@ function CatalogAddModal(): JSX.Element | null {
   }
   const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name, category, price, vendorCode, level, type } = selectedProduct;
 
+  const imagePath = (path: string) => `${path.startsWith('/') ? '' : '/'}${path}`;
+
+  const correctPreviewImgWebp = imagePath(previewImgWebp);
+  const correctPreviewImgWebp2x = imagePath(previewImgWebp2x);
+  const correctPreviewImg = imagePath(previewImg);
+  const correctPreviewImg2x = imagePath(previewImg2x);
 
   const handleAddProductButtonClick = () => {
 
@@ -49,11 +55,11 @@ function CatalogAddModal(): JSX.Element | null {
               <picture>
                 <source
                   type="image/webp"
-                  srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`}
+                  srcSet={`${correctPreviewImgWebp}, ${correctPreviewImgWebp2x} 2x`}
                 />
                 <img
-                  src={previewImg}
-                  srcSet={`${previewImg2x} 2x`}
+                  src={correctPreviewImg}
+                  srcSet={`${correctPreviewImg2x} 2x`}
                   width={140}
                   height={120}
                   alt={name}
