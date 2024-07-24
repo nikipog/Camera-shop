@@ -78,7 +78,7 @@ function CatalogAddModal(): JSX.Element | null {
                 <li className="basket-item__list-item">
                   {type} {category.includes('Фотоаппарат') ? 'фотокамера' : category.toLowerCase()}
                 </li>
-                <li className="basket-item__list-item">{level}</li>
+                <li className="basket-item__list-item">{level} уровень</li>
               </ul>
               <p className="basket-item__price">
                 <span className="visually-hidden">Цена:</span>{price.toLocaleString()} ₽

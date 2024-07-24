@@ -13,6 +13,7 @@ import { ModalProvider } from '../../context/modal-context';
 import ModalManager from '../modals/modal-manager';
 import { SelectedProductProvider } from '../../context/selected-product-context';
 import 'react-toastify/dist/ReactToastify.css';
+import CartPage from '../../pages/cart-page/cart-page';
 
 function App(): JSX.Element {
 
@@ -45,6 +46,10 @@ function App(): JSX.Element {
                 <Route
                   path={AppRoute.Product}
                   element={<ProductPage />}
+                />
+                <Route
+                  path={AppRoute.Cart}
+                  element={<CartPage />}
                 />
               </Route>
 
