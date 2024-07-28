@@ -11,12 +11,25 @@ interface QuantityAction {
   newQuantity: number;
 }
 
+const loadStateFromLocalStorage = (): OrderState => {
+  const defaultState: OrderState = {
+    addedProducts: [],
+    totalPrice: 0,
+    totalQuantity: 0,
+  };
 
-const initialState: OrderState = {
-  addedProducts: [],
-  totalPrice: 0,
-  totalQuantity: 0,
+  try {
+    const serializedState = localStorage.getItem('shoppingCart');
+    if (serializedState === null) {
+      return defaultState;
+    }
+    return JSON.parse(serializedState) as OrderState;
+  } catch {
+    return defaultState;
+  }
 };
+
+const initialState: OrderState = loadStateFromLocalStorage();
 
 
 export const shoppingCartSlice = createSlice({

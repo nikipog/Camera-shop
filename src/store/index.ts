@@ -8,6 +8,7 @@ import { filterSlice } from './slices/filters/filter';
 import { sortSlice } from './slices/sort/sort';
 import { paginationSlice } from './slices/pagination/pagination';
 import { shoppingCartSlice } from './slices/shopping-cart/shopping-cart';
+import localStorageMiddleware from './middlewares/local-storage-middleware/local-storage-middleware';
 
 
 const reducer = combineReducers({
@@ -29,6 +30,6 @@ export const store = configureStore({
         extraArgument:
           createApi()
       }
-    }),
+    }).concat(localStorageMiddleware),
   reducer,
 });
