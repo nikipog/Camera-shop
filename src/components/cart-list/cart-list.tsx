@@ -9,7 +9,7 @@ type CartListProps = {
 
 const CartList = memo(({ addedProducts }: CartListProps): JSX.Element => {
 
-  console.log(addedProducts.length)
+  const nothin = 1;
   return (
     <ul className="basket__list">
       {addedProducts.map((product) => (

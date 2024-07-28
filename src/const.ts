@@ -21,7 +21,8 @@ export const ToastifyMessages = {
   InputValueLessThanPriceTo: (minPriceValue: number | null) =>
     `Для выбранных фильтров минимальная цена товаров от ${minPriceValue !== null ? minPriceValue : ''} руб.`,
   InputValueExceedsToError: (maxPriceValue: number | null) =>
-    `Для выбранных фильтров максимальная цена товаров ${maxPriceValue !== null ? maxPriceValue : ''} руб. `
+    `Для выбранных фильтров максимальная цена товаров ${maxPriceValue !== null ? maxPriceValue : ''} руб. `,
+  ProductQuantityError: 'Количество товара должно быть от 1 до 9',
 } as const;
 
 export const MAX_RATING_COUNT = 5;
@@ -30,6 +31,7 @@ export const MODAL_NAMES = {
   CATALOG_CALL_MODAL: 'CatalogCallModal',
   CATALOG_ADD_MODAL: 'CatalogAddModal',
   CATALOG_ADD_SUCCESS_MODAL: 'CatalogAddSuccessModal',
+  CART_REMOVE_ITEM_MODAL: 'CartRemoveItemModal'
 } as const;
 
 export const HttpResponseStatusCodes = {

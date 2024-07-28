@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { useModalRules } from '../../../../hooks/modal-rules';
 import { AppRoute } from '../../../../const';
 import { useNavigate } from 'react-router-dom';
-import { useSelectedProduct } from '../../../../hooks/select-product';
 
 function CatalogAddSuccessModal(): JSX.Element | null {
 
@@ -13,35 +12,18 @@ function CatalogAddSuccessModal(): JSX.Element | null {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const { modalRef, overlayRef, handleCloseModal: closeOriginalModal } = useModalRules([continueShoppingRef, goToCartRef, closeButtonRef]);
-  const { selectedProduct, setSelectedProduct } = useSelectedProduct();
 
-  // const handleAddButtonClick = () => {
-  //   if (selectedProduct) {
-  //     const formattedPhone = formatPhoneNumber(phone);
-  //     if (!formattedPhone.startsWith('+79')) {
-  //       setError('Укажите номер в формате +7(9XX)XXX-XX-XX');
-  //       return;
-  //     }
-  //     dispatch(ordersThunk.postOrder({
-  //       body: {
-  //         camerasIds: [selectedProduct.id],
-  //         coupon: null,
-  //         tel: formattedPhone,
-  //       }
-  //     }))
-  //       .then(() => {
-  //         handleCloseModal();
-  //       })
-  //       .catch(() => {
-  //         setError('Ошибка при отправке заказа');
-  //       });
-  //   }
-  // };
+
   const handleCloseModalButtonClick = () => {
     closeOriginalModal();
   };
   const handleContinueShoppingButtonClick = () => {
     navigate(AppRoute.Catalog);
+    closeOriginalModal();
+  };
+
+  const handleGoToCartButtonClick = () => {
+    navigate(AppRoute.Cart);
     closeOriginalModal();
   };
 
@@ -66,6 +48,7 @@ function CatalogAddSuccessModal(): JSX.Element | null {
             <button
               className="btn btn--purple modal__btn modal__btn--fit-width"
               ref={goToCartRef}
+              onClick={handleGoToCartButtonClick}
 
             >
               Перейти в корзину

@@ -1,22 +1,28 @@
 import { useRef } from 'react';
 import { useModalRules } from '../../../../hooks/modal-rules';
-import { MODAL_NAMES } from '../../../../const';
+import { AppRoute } from '../../../../const';
 import { useSelectedProduct } from '../../../../hooks/select-product';
-import { useModalContext } from '../../../../hooks/modal-context';
-import { useAppDispatch } from '../../../../hooks/store';
-import { addProduct } from '../../../../store/slices/shopping-cart/shopping-cart';
 
-function CatalogAddModal(): JSX.Element | null {
+import { useAppDispatch, useAppSelector } from '../../../../hooks/store';
+import { removeProduct } from '../../../../store/slices/shopping-cart/shopping-cart';
+import { useNavigate } from 'react-router-dom';
+import { selectAddedProducts } from '../../../../store/selectors/shopping-cart-selectors';
+
+function CartRemoveItemModal(): JSX.Element | null {
 
   const dispatch = useAppDispatch();
-  const { openModal } = useModalContext();
+  const navigate = useNavigate();
+  const addedProducts = useAppSelector(selectAddedProducts);
 
-  const addProductInCartRef = useRef<HTMLButtonElement>(null);
+
+  const removeProductRef = useRef<HTMLButtonElement>(null);
+  const continueShoppingRef = useRef<HTMLButtonElement>(null);
 
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { modalRef, overlayRef, handleCloseModal } = useModalRules([addProductInCartRef, closeButtonRef]);
+  const { modalRef, overlayRef, handleCloseModal } = useModalRules([removeProductRef, closeButtonRef]);
   const { selectedProduct, setSelectedProduct } = useSelectedProduct();
+
 
   if (!selectedProduct) {
     return null;
@@ -24,18 +30,26 @@ function CatalogAddModal(): JSX.Element | null {
   const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name, category, price, vendorCode, level, type } = selectedProduct;
 
 
-  const handleAddProductButtonClick = () => {
-
-    openModal(MODAL_NAMES.CATALOG_ADD_SUCCESS_MODAL);
-
+  const handleRemoveProductButtonClick = () => {
     if (selectedProduct) {
-      dispatch(addProduct(selectedProduct));
+      dispatch(removeProduct(selectedProduct));
+      handleCloseModal();
+      setSelectedProduct(null);
+    }
+    if (addedProducts.length - 1 === 0) {
+      navigate(AppRoute.Catalog);
     }
   };
+
 
   const handleCloseButtonClick = () => {
     handleCloseModal();
     setSelectedProduct(null);
+  };
+
+  const handleContinueShoppingButtonClick = () => {
+    navigate(AppRoute.Catalog);
+    handleCloseModal();
   };
 
   return (
@@ -43,7 +57,7 @@ function CatalogAddModal(): JSX.Element | null {
       <div className="modal__wrapper">
         <div className="modal__overlay" ref={overlayRef} />
         <div className="modal__content" ref={modalRef}>
-          <p className="title title--h4">Добавить товар в корзину</p>
+          <p className="title title--h4">Удалить этот товар?</p>
           <div className="basket-item basket-item--short">
             <div className="basket-item__img">
               <picture>
@@ -81,15 +95,19 @@ function CatalogAddModal(): JSX.Element | null {
           </div>
           <div className="modal__buttons">
             <button
-              className="btn btn--purple modal__btn modal__btn--fit-width"
+              className="btn btn--purple modal__btn modal__btn--half-width"
               type="button"
-              ref={addProductInCartRef}
-              onClick={handleAddProductButtonClick}
+              ref={removeProductRef}
+              onClick={handleRemoveProductButtonClick}
             >
-              <svg width={24} height={16} aria-hidden="true">
-                <use xlinkHref="#icon-add-basket" />
-              </svg>
-              Добавить в корзину
+              Удалить
+            </button>
+            <button
+              className="btn btn--transparent modal__btn modal__btn--half-width"
+              onClick={handleContinueShoppingButtonClick}
+              ref={continueShoppingRef}
+            >
+              Продолжить покупки
             </button>
           </div>
           <button
@@ -111,4 +129,4 @@ function CatalogAddModal(): JSX.Element | null {
   );
 }
 
-export default CatalogAddModal;
+export default CartRemoveItemModal;
