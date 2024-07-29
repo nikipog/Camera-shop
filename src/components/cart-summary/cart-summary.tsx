@@ -1,9 +1,14 @@
 import { memo } from 'react';
+import { useAppSelector } from '../../hooks/store';
+import { selectTotalPrice, selectTotalPriceWithDiscount } from '../../store/selectors/shopping-cart-selectors';
 
 
 const CartSummary = memo((): JSX.Element => {
 
-  const nothing = 1;
+  const totalPrice = useAppSelector(selectTotalPrice);
+  const totalPriceWithDiscount = useAppSelector(selectTotalPriceWithDiscount);
+  const discountInRubles = totalPrice - totalPriceWithDiscount;
+
   return (
     <div className="basket__summary">
       <div className="basket__promo">
@@ -25,12 +30,12 @@ const CartSummary = memo((): JSX.Element => {
       <div className="basket__summary-order">
         <p className="basket__summary-item">
           <span className="basket__summary-text">Всего:</span>
-          <span className="basket__summary-value">111 390 ₽</span>
+          <span className="basket__summary-value">{totalPrice.toLocaleString()} ₽</span>
         </p>
         <p className="basket__summary-item">
           <span className="basket__summary-text">Скидка:</span>
-          <span className="basket__summary-value basket__summary-value--bonus">
-            0 ₽
+          <span className={`basket__summary-value${discountInRubles > 0 ? ' basket__summary-value--bonus' : ''}`}>
+            {discountInRubles} ₽
           </span>
         </p>
         <p className="basket__summary-item">
@@ -38,7 +43,7 @@ const CartSummary = memo((): JSX.Element => {
             К оплате:
           </span>
           <span className="basket__summary-value basket__summary-value--total">
-            111 390 ₽
+            {totalPriceWithDiscount.toLocaleString()} ₽
           </span>
         </p>
         <button className="btn btn--purple" type="submit">

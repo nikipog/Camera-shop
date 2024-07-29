@@ -1,21 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product } from '../../../types/product';
+import { adjustDiscountByTotalPrice, getDiscountByQuantity } from '../../../utils/utils';
 
-interface OrderState {
+interface ShoppingCartState {
   addedProducts: Product[];
   totalPrice: number;
   totalQuantity: number;
+  discountPercent: number;
+  totalPriceWithDiscount: number;
 }
 interface QuantityAction {
   id: number;
   newQuantity: number;
 }
 
-const loadStateFromLocalStorage = (): OrderState => {
-  const defaultState: OrderState = {
+const loadStateFromLocalStorage = (): ShoppingCartState => {
+  const defaultState: ShoppingCartState = {
     addedProducts: [],
     totalPrice: 0,
     totalQuantity: 0,
+    discountPercent: 0,
+    totalPriceWithDiscount: 0,
   };
 
   try {
@@ -23,13 +28,13 @@ const loadStateFromLocalStorage = (): OrderState => {
     if (serializedState === null) {
       return defaultState;
     }
-    return JSON.parse(serializedState) as OrderState;
+    return JSON.parse(serializedState) as ShoppingCartState;
   } catch {
     return defaultState;
   }
 };
 
-const initialState: OrderState = loadStateFromLocalStorage();
+const initialState: ShoppingCartState = loadStateFromLocalStorage();
 
 
 export const shoppingCartSlice = createSlice({
@@ -75,10 +80,19 @@ export const shoppingCartSlice = createSlice({
       state.addedProducts = state.addedProducts.filter((item) => item.id !== action.payload.id);
       shoppingCartSlice.caseReducers.updateTotals(state);
     },
-    updateTotals(state: OrderState) {
+    updateTotals(state: ShoppingCartState) {
       state.totalQuantity = state.addedProducts.reduce((sum, product) => sum + (product.quantity || 0), 0);
       state.totalPrice = state.addedProducts.reduce((sum, obj) => obj.price * (obj.quantity || 0) + sum, 0);
+
+      let discountPercent = getDiscountByQuantity(state.totalQuantity);
+      if (state.totalQuantity > 1) {
+        discountPercent = adjustDiscountByTotalPrice(state.totalPrice, discountPercent);
+      }
+
+      state.discountPercent = discountPercent;
+      state.totalPriceWithDiscount = Math.round(state.totalPrice - (state.totalPrice / 100 * state.discountPercent));
     }
+
   }
 });
 
