@@ -2,12 +2,13 @@
 
 import React, { memo, useState } from 'react';
 import { Product } from '../../types/product';
-import { useAppDispatch } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { addProduct, decrementProductQuantity, setProductQuantity } from '../../store/slices/shopping-cart/shopping-cart';
-import { MODAL_NAMES, ToastifyMessages } from '../../const';
+import { MODAL_NAMES, RequestStatus, ToastifyMessages } from '../../const';
 import './error-tooltip.css';
 import { useModalContext } from '../../hooks/modal-context';
 import { useSelectedProduct } from '../../hooks/select-product';
+import { selectOrderStatus } from '../../store/selectors/order-selectors';
 
 
 type CartItemProps = {
@@ -26,6 +27,8 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const { openModal } = useModalContext();
   const { setSelectedProduct } = useSelectedProduct();
+  const orderStatus = useAppSelector(selectOrderStatus);
+  const isLoading = orderStatus === RequestStatus.Loading;
 
   const handleIncrementButtonClick = () => {
     dispatch(addProduct(addedProduct));
@@ -129,6 +132,7 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
           className="btn-icon btn-icon--prev"
           aria-label="уменьшить количество товара"
           onClick={handleDecrementButtonClick}
+          disabled={isLoading}
         >
           <svg width={7} height={12} aria-hidden="true">
             <use xlinkHref="#icon-arrow" />
@@ -146,12 +150,14 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
           onChange={handleProductQuantityInputChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          disabled={isLoading}
         />
         {quantityError && <div className="error-tooltip">{quantityError}</div>}
         <button
           className="btn-icon btn-icon--next"
           aria-label="увеличить количество товара"
           onClick={handleIncrementButtonClick}
+          disabled={isLoading}
         >
           <svg width={7} height={12} aria-hidden="true">
             <use xlinkHref="#icon-arrow" />
@@ -167,6 +173,7 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
         type="button"
         aria-label="Удалить товар"
         onClick={handleRemoveButtonClick}
+        disabled={isLoading}
       >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />

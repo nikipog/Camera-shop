@@ -31,7 +31,10 @@ export const MODAL_NAMES = {
   CATALOG_CALL_MODAL: 'CatalogCallModal',
   CATALOG_ADD_MODAL: 'CatalogAddModal',
   CATALOG_ADD_SUCCESS_MODAL: 'CatalogAddSuccessModal',
-  CART_REMOVE_ITEM_MODAL: 'CartRemoveItemModal'
+  CART_REMOVE_ITEM_MODAL: 'CartRemoveItemModal',
+  CART_SUCCESS_ORDER_MODAL: 'CartSuccessOrderModal',
+  CART_FAILURE_ORDER_MODAL: 'CartFailureOrderModal',
+
 } as const;
 
 export const HttpResponseStatusCodes = {

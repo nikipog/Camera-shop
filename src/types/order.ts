@@ -1,7 +1,9 @@
+type AllowedCoupons = null | 'camera-333' | 'camera-444' | 'camera-555'
+
 type Order =
   {
     camerasIds: number[];
-    tel: string;
+    coupon: AllowedCoupons;
   };
 
-export type { Order };
+export type { Order, AllowedCoupons };

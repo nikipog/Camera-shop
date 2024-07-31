@@ -80,6 +80,10 @@ export const shoppingCartSlice = createSlice({
       state.addedProducts = state.addedProducts.filter((item) => item.id !== action.payload.id);
       shoppingCartSlice.caseReducers.updateTotals(state);
     },
+    clearCart(state) {
+      state.addedProducts.splice(0, state.addedProducts.length);
+      shoppingCartSlice.caseReducers.updateTotals(state);
+    },
     updateTotals(state: ShoppingCartState) {
       state.totalQuantity = state.addedProducts.reduce((sum, product) => sum + (product.quantity || 0), 0);
       state.totalPrice = state.addedProducts.reduce((sum, obj) => obj.price * (obj.quantity || 0) + sum, 0);
@@ -96,7 +100,7 @@ export const shoppingCartSlice = createSlice({
   }
 });
 
-export const { addProduct, removeProduct, decrementProductQuantity, setProductQuantity } = shoppingCartSlice.actions;
+export const { addProduct, removeProduct, decrementProductQuantity, setProductQuantity, clearCart } = shoppingCartSlice.actions;
 
 
 export default shoppingCartSlice.reducer;
