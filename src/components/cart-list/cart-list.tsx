@@ -7,20 +7,16 @@ type CartListProps = {
   addedProducts: Product[];
 }
 
-const CartList = memo(({ addedProducts }: CartListProps): JSX.Element => {
-
-  const nothin = 1;
-  return (
-    <ul className="basket__list">
-      {addedProducts.map((product) => (
-        <CartItem
-          key={product.id}
-          addedProduct={product}
-        />
-      ))}
-    </ul>
-  );
-});
+const CartList = memo(({ addedProducts }: CartListProps): JSX.Element => (
+  <ul className="basket__list">
+    {addedProducts.map((product) => (
+      <CartItem
+        key={product.id}
+        addedProduct={product}
+      />
+    ))}
+  </ul>
+));
 
 
 CartList.displayName = 'CartList';

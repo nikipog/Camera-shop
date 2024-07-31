@@ -3,9 +3,9 @@ import { createApi } from '../services/api';
 import thunk from 'redux-thunk';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Action } from 'redux';
-import { AppThunkDispatch, MOCK_ORDER, MOCK_PRODUCT, MOCK_REVIEWS, PRODUCT_MOCK_ID, extractActionsTypes, mockProducts } from '../utils/mocks';
+import { AppThunkDispatch, MOCK_ORDER, MOCK_PRODUCT, MOCK_REVIEW, PRODUCT_MOCK_ID, extractActionsTypes, mockProducts } from '../utils/mocks';
 import { State } from '../types/state';
-import { Endpoint, HttpResponseStatusCodes } from '../const';
+import { Endpoint, HttpResponseStatusCode } from '../const';
 import { fetchAllProducts, fetchProduct } from './thunks/products/products';
 import { fetchReviews } from './thunks/reviews/reviews';
 import { ordersThunk } from './thunks/order/order';
@@ -46,7 +46,7 @@ describe('Async action', () => {
   describe('fetchAllProductsAction', () => {
     it('should dispatch "fetchProductsAction.pending", "fetchProductsAction.fulfilled", when server response 200', async () => {
       // на запрос по адресу .. ответ должен быть 200 и вернуть массив моковых продуктов
-      mockAxiosAdapter.onGet(Endpoint.Cameras).reply(HttpResponseStatusCodes.SuccessfulResponse, mockProducts);
+      mockAxiosAdapter.onGet(Endpoint.Cameras).reply(HttpResponseStatusCode.SuccessfulResponse, mockProducts);
       await store.dispatch(fetchAllProducts());
 
       // постподготовка - извлекаем переменные для удобного сравнения
@@ -73,7 +73,7 @@ describe('Async action', () => {
         .toEqual(mockProducts);
     });
     it ('should dispatch "fetchProductsAction.pending", "fetchProductsAction.rejected", when server response 400', async () => {
-      mockAxiosAdapter.onGet(Endpoint.Cameras).reply(HttpResponseStatusCodes.ClientErrorResponse, []);
+      mockAxiosAdapter.onGet(Endpoint.Cameras).reply(HttpResponseStatusCode.ClientErrorResponse, []);
 
       await store.dispatch(fetchAllProducts());
       const actions = extractActionsTypes(store.getActions());
@@ -89,7 +89,7 @@ describe('Async action', () => {
   describe('fetchProductAction', () => {
     it('should dispatch "fetchProductAction.pending", "fetchProductAction.fulfilled", when server response 200', async () => {
 
-      mockAxiosAdapter.onGet(`${Endpoint.Cameras}/${PRODUCT_MOCK_ID}`).reply(HttpResponseStatusCodes.SuccessfulResponse, MOCK_PRODUCT);
+      mockAxiosAdapter.onGet(`${Endpoint.Cameras}/${PRODUCT_MOCK_ID}`).reply(HttpResponseStatusCode.SuccessfulResponse, MOCK_PRODUCT);
       await store.dispatch(fetchProduct(PRODUCT_MOCK_ID.toString()));
 
       const emittedActions = store.getActions();
@@ -107,7 +107,7 @@ describe('Async action', () => {
         .toEqual(MOCK_PRODUCT);
     });
     it ('should dispatch "fetchProductsAction.pending", "fetchProductsAction.rejected", when server response 400', async () => {
-      mockAxiosAdapter.onGet(Endpoint.Cameras).reply(HttpResponseStatusCodes.ClientErrorResponse, []);
+      mockAxiosAdapter.onGet(Endpoint.Cameras).reply(HttpResponseStatusCode.ClientErrorResponse, []);
 
       await store.dispatch(fetchAllProducts());
       const actions = extractActionsTypes(store.getActions());
@@ -123,7 +123,7 @@ describe('Async action', () => {
   describe('fetchReviews', () => {
     it('should dispatch "fetchReviewsAction.pending", "fetchReviewsAction.fulfilled", when server response 200', async () => {
 
-      mockAxiosAdapter.onGet(`${Endpoint.Cameras}/${PRODUCT_MOCK_ID}/reviews`).reply(HttpResponseStatusCodes.SuccessfulResponse, MOCK_REVIEWS);
+      mockAxiosAdapter.onGet(`${Endpoint.Cameras}/${PRODUCT_MOCK_ID}/reviews`).reply(HttpResponseStatusCode.SuccessfulResponse, MOCK_REVIEW);
 
       await store.dispatch(fetchReviews(PRODUCT_MOCK_ID));
 
@@ -140,10 +140,10 @@ describe('Async action', () => {
       ]);
       // теперь надо убедиться что в payload лежит массив моковых данных
       expect(fetchReviewsFulfilled.payload)
-        .toEqual(MOCK_REVIEWS);
+        .toEqual(MOCK_REVIEW);
     });
     it ('should dispatch "fetchProductsAction.pending", "fetchProductsAction.rejected", when server response 400', async () => {
-      mockAxiosAdapter.onGet(`${Endpoint.Cameras}/${PRODUCT_MOCK_ID}/reviews`).reply(HttpResponseStatusCodes.ClientErrorResponse, []);
+      mockAxiosAdapter.onGet(`${Endpoint.Cameras}/${PRODUCT_MOCK_ID}/reviews`).reply(HttpResponseStatusCode.ClientErrorResponse, []);
 
       await store.dispatch(fetchReviews(PRODUCT_MOCK_ID));
       const actions = extractActionsTypes(store.getActions());
@@ -159,7 +159,7 @@ describe('Async action', () => {
   describe('postOrder', () => {
     it('should dispatch "postOrderAction.pending", "postOrderAction.fulfilled", when server response 201', async () => {
 
-      mockAxiosAdapter.onPost(`${Endpoint.Orders}`).reply(HttpResponseStatusCodes.SuccessfulResponse, MOCK_ORDER);
+      mockAxiosAdapter.onPost(`${Endpoint.Orders}`).reply(HttpResponseStatusCode.SuccessfulResponse, MOCK_ORDER);
 
       await store.dispatch(ordersThunk.postOrder({
         body: MOCK_ORDER
@@ -181,7 +181,7 @@ describe('Async action', () => {
         .toEqual(MOCK_ORDER);
     });
     it ('should dispatch "postOrderAction.pending", "postOrderAction.rejected", when server response 400', async () => {
-      mockAxiosAdapter.onPost(`${Endpoint.Orders}`).reply(HttpResponseStatusCodes.ClientErrorResponse, []);
+      mockAxiosAdapter.onPost(`${Endpoint.Orders}`).reply(HttpResponseStatusCode.ClientErrorResponse, []);
 
       await store.dispatch(ordersThunk.postOrder({
         body: MOCK_ORDER

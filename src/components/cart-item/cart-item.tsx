@@ -4,7 +4,7 @@ import React, { memo, useState } from 'react';
 import { Product } from '../../types/product';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { addProduct, decrementProductQuantity, setProductQuantity } from '../../store/slices/shopping-cart/shopping-cart';
-import { MODAL_NAMES, RequestStatus, ToastifyMessages } from '../../const';
+import { CartConstant, ModalName, RequestStatus, ToastifyMessage } from '../../const';
 import './error-tooltip.css';
 import { useModalContext } from '../../hooks/modal-context';
 import { useSelectedProduct } from '../../hooks/select-product';
@@ -23,7 +23,7 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
   const [previousQuantity, setPreviousQuantity] = useState<number | string | undefined>(quantity);
   const [quantityError, setQuantityError] = useState<string | null>(null);
   const [errorTimeout, setErrorTimeout] = useState<NodeJS.Timeout | null>(null);
-  const totalPricePerProduct = (quantity || 0) * price;
+  const totalPricePerProduct = (quantity || CartConstant.NoProduct) * price;
   const dispatch = useAppDispatch();
   const { openModal } = useModalContext();
   const { setSelectedProduct } = useSelectedProduct();
@@ -32,15 +32,15 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
 
   const handleIncrementButtonClick = () => {
     dispatch(addProduct(addedProduct));
-    if ((quantity || 0) < 9) {
+    if ((quantity || CartConstant.NoProduct) < CartConstant.MaxQuantityPerOneProduct) {
 
-      setLocalProductQuantity((quantity || 0) + 1);
+      setLocalProductQuantity((quantity || CartConstant.NoProduct) + CartConstant.OneProduct);
     }
   };
   const handleDecrementButtonClick = () => {
     dispatch(decrementProductQuantity(addedProduct));
-    if ((quantity || 0) > 1) {
-      setLocalProductQuantity((quantity || 0) - 1);
+    if ((quantity || CartConstant.NoProduct) > CartConstant.OneProduct) {
+      setLocalProductQuantity((quantity || CartConstant.NoProduct) - CartConstant.OneProduct);
     }
   };
 
@@ -48,9 +48,9 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
     const newQuantity = event.target.value;
     const newQuantityNumber = Number(newQuantity);
 
-    if (newQuantity === '' || (newQuantityNumber >= 1 && newQuantityNumber <= 9)) {
+    if (newQuantity === '' || (newQuantityNumber >= CartConstant.OneProduct && newQuantityNumber <= CartConstant.MaxQuantityPerOneProduct)) {
       setLocalProductQuantity(newQuantity);
-      if (newQuantityNumber >= 1 && newQuantityNumber <= 9) {
+      if (newQuantityNumber >= CartConstant.OneProduct && newQuantityNumber <= CartConstant.MaxQuantityPerOneProduct) {
         setQuantityError(null);
         if (errorTimeout) {
           clearTimeout(errorTimeout);
@@ -63,7 +63,7 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
           setErrorTimeout(null);
         }
         const timeout = setTimeout(() => {
-          setQuantityError(ToastifyMessages.ProductQuantityError);
+          setQuantityError(ToastifyMessage.ProductQuantityError);
           setErrorTimeout(null);
         }, 2000);
         setErrorTimeout(timeout);
@@ -86,7 +86,7 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
   };
 
   const handleRemoveButtonClick = () => {
-    openModal(MODAL_NAMES.CART_REMOVE_ITEM_MODAL);
+    openModal(ModalName.CartRemoveItemModal);
     setSelectedProduct(addedProduct);
   };
 

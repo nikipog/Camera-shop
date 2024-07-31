@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useModalRules } from '../../../../hooks/modal-rules';
-import { MODAL_NAMES } from '../../../../const';
+import { ModalName } from '../../../../const';
 import { useSelectedProduct } from '../../../../hooks/select-product';
 import { useModalContext } from '../../../../hooks/modal-context';
 import { useAppDispatch } from '../../../../hooks/store';
@@ -26,7 +26,7 @@ function CatalogAddModal(): JSX.Element | null {
 
   const handleAddProductButtonClick = () => {
 
-    openModal(MODAL_NAMES.CATALOG_ADD_SUCCESS_MODAL);
+    openModal(ModalName.CatalogAddSuccessModal);
 
     if (selectedProduct) {
       dispatch(addProduct(selectedProduct));

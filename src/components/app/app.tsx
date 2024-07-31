@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import CatalogPage from '../../pages/catalog-page/catalog-page';
 import ProductPage from '../../pages/product-page/product-page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AppRoute, ToastifyMessages } from '../../const';
+import { AppRoute, ToastifyMessage } from '../../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
 import { productsActions } from '../../store/slices/products/products';
@@ -23,7 +23,7 @@ function App(): JSX.Element {
     dispatch(productsActions.fetchAllProducts())
       .unwrap()
       .catch(() => {
-        toast.error(ToastifyMessages.FetchProductsError);
+        toast.error(ToastifyMessage.FetchProductsError);
       });
   }, [dispatch]);
 

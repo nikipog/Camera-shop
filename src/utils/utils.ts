@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+import { DiscountAmount, OrderAmountRange, ProductQuantityDiscountRange } from '../const';
 
 const DayjsFormats = {
   LocaleRussia: 'ru',
@@ -12,28 +13,30 @@ export const formatReviewDate = (date: string): string => {
   return localizedDate.format(DayjsFormats.TimeFormatDayMonth); // форматирую в соответствии с техзаданием
 };
 
+
 export const getDiscountByQuantity = (totalQuantity: number): number => {
-  if (totalQuantity <= 1) {
-    return 0;
-  } else if (totalQuantity === 2) {
-    return 3;
-  } else if (totalQuantity >= 3 && totalQuantity <= 5) {
-    return 5;
-  } else if (totalQuantity >= 6 && totalQuantity <= 10) {
-    return 10;
-  } else if (totalQuantity > 10) {
-    return 15;
+  if (totalQuantity <= ProductQuantityDiscountRange.OneProduct) {
+    return DiscountAmount.ZeroPercent;
+  } else if (totalQuantity === ProductQuantityDiscountRange.TwoProducts) {
+    return DiscountAmount.ThreePercents;
+  } else if (totalQuantity >= ProductQuantityDiscountRange.ThreeProducts && totalQuantity <= ProductQuantityDiscountRange.FiveProducts) {
+    return DiscountAmount.FivePercents;
+  } else if (totalQuantity >= ProductQuantityDiscountRange.SixProducts && totalQuantity <= ProductQuantityDiscountRange.TenProducts) {
+    return DiscountAmount.TenPercents;
+  } else if (totalQuantity > ProductQuantityDiscountRange.TenProducts) {
+    return DiscountAmount.FifteenPercents;
   }
-  return 0;
+  return DiscountAmount.ZeroPercent;
 };
 
+
 export const adjustDiscountByTotalPrice = (totalPrice: number, discountPercent: number): number => {
-  if (totalPrice >= 10000 && totalPrice < 20000) {
-    return discountPercent - 1;
-  } else if (totalPrice >= 20000 && totalPrice < 30000) {
-    return discountPercent - 2;
-  } else if (totalPrice >= 30000) {
-    return discountPercent - 3;
+  if (totalPrice >= OrderAmountRange.TenThousand && totalPrice < OrderAmountRange.TwentyThousand) {
+    return discountPercent - DiscountAmount.OnePercent;
+  } else if (totalPrice >= OrderAmountRange.TwentyThousand && totalPrice < OrderAmountRange.ThirtyThousand) {
+    return discountPercent - DiscountAmount.TwoPercents;
+  } else if (totalPrice >= OrderAmountRange.ThirtyThousand) {
+    return discountPercent - DiscountAmount.ThreePercents;
   }
   return discountPercent;
 };

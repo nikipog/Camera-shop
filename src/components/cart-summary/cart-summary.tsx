@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { selectAddedProducts, selectTotalPrice, selectTotalPriceWithDiscount } from '../../store/selectors/shopping-cart-selectors';
 import { ordersThunk } from '../../store/thunks/order/order';
 import { useModalContext } from '../../hooks/modal-context';
-import { MODAL_NAMES, RequestStatus } from '../../const';
+import { CartConstant, ModalName, RequestStatus } from '../../const';
 import { clearCart } from '../../store/slices/shopping-cart/shopping-cart';
 import { selectOrderStatus } from '../../store/selectors/order-selectors';
 
@@ -32,11 +32,11 @@ const CartSummary = memo((): JSX.Element => {
     }))
       .unwrap()
       .then(() => {
-        openModal(MODAL_NAMES.CART_SUCCESS_ORDER_MODAL);
+        openModal(ModalName.CartSuccessOrderModal);
         dispatch(clearCart());
       })
       .catch(() => {
-        openModal(MODAL_NAMES.CART_FAILURE_ORDER_MODAL);
+        openModal(ModalName.CartFailureOrderModal);
       });
   };
 
@@ -74,7 +74,7 @@ const CartSummary = memo((): JSX.Element => {
         </p>
         <p className="basket__summary-item">
           <span className="basket__summary-text">Скидка:</span>
-          <span className={`basket__summary-value${discountInRubles > 0 ? ' basket__summary-value--bonus' : ''}`}>
+          <span className={`basket__summary-value${discountInRubles > CartConstant.NoDiscount ? ' basket__summary-value--bonus' : ''}`}>
             {discountInRubles} ₽
           </span>
         </p>
@@ -89,7 +89,7 @@ const CartSummary = memo((): JSX.Element => {
         <button
           className="btn btn--purple"
           type="submit"
-          disabled={addedProducts.length === 0 || isLoading}
+          disabled={addedProducts.length === CartConstant.EmptyCart || isLoading}
           onClick={handleOrderButtonClick}
         >
           Оформить заказ

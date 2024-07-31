@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from 'react';
 import { setCategory, toggleType, toggleLevel, resetFilters, setPriceInputValues, resetCategory } from '../../store/slices/filters/filter';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { toast } from 'react-toastify';
-import { ForbiddenVideocategories, PriceInputNames, ToastifyMessages } from '../../const';
+import { ForbiddenVideocategory, PriceInputName, ToastifyMessage } from '../../const';
 import { resetSort } from '../../store/slices/sort/sort';
 import { selectFilters, selectPriceInputValues } from '../../store/selectors/filter-selectors';
 
@@ -33,7 +33,7 @@ const CatalogFilter = memo(() => {
     if (category === VIDEOCAMERA_CATEGORY) {
       // Проверяем текущие фильтры и сбрасываем только недоступные
       filters.type.forEach((type) => {
-        if (type === ForbiddenVideocategories.InstantType || type === ForbiddenVideocategories.FilmType) {
+        if (type === ForbiddenVideocategory.InstantType || type === ForbiddenVideocategory.FilmType) {
           dispatch(toggleType(type));
         }
       });
@@ -72,15 +72,15 @@ const CatalogFilter = memo(() => {
   const handlePriceChange = (name: string, value: string) => {
     const newPrice = Number(value);
 
-    if (name === PriceInputNames.MinPrice) {
+    if (name === PriceInputName.MinPrice) {
       if (maxPrice !== null && newPrice > maxPrice) {
-        toast.error(ToastifyMessages.PriceFromExceedsToError);
+        toast.error(ToastifyMessage.PriceFromExceedsToError);
         setLocalMinPrice(minPrice); // Сброс цены к предыдущему значению
         return;
       }
 
       if (minPrice !== null && newPrice < minPrice) {
-        toast.error(ToastifyMessages.InputValueLessThanPriceTo(minPrice));
+        toast.error(ToastifyMessage.InputValueLessThanPriceTo(minPrice));
         setLocalMinPrice(minPrice);
         return;
       }
@@ -88,14 +88,14 @@ const CatalogFilter = memo(() => {
       if (newPrice !== minPriceInputValue && (maxPrice === null || newPrice <= maxPrice)) {
         dispatch(setPriceInputValues({ minPriceInputValue: newPrice, maxPriceInputValue }));
       }
-    } else if (name === PriceInputNames.MaxPrice) {
+    } else if (name === PriceInputName.MaxPrice) {
       if (minPrice !== null && newPrice < minPrice) {
-        toast.error(ToastifyMessages.PriceToLessThenFromError);
+        toast.error(ToastifyMessage.PriceToLessThenFromError);
         setLocalMaxPrice(maxPrice);
         return;
       }
       if (maxPrice !== null && newPrice > maxPrice) {
-        toast.error(ToastifyMessages.InputValueExceedsToError(maxPrice));
+        toast.error(ToastifyMessage.InputValueExceedsToError(maxPrice));
         setLocalMaxPrice(maxPrice);
         return;
       }

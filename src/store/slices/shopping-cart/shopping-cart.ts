@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product } from '../../../types/product';
 import { adjustDiscountByTotalPrice, getDiscountByQuantity } from '../../../utils/utils';
+import { ArrayMethodParameter, PERCENT_TOTAL, ProductQuantityDiscountRange } from '../../../const';
 
 interface ShoppingCartState {
   addedProducts: Product[];
@@ -36,6 +37,12 @@ const loadStateFromLocalStorage = (): ShoppingCartState => {
 
 const initialState: ShoppingCartState = loadStateFromLocalStorage();
 
+export const ProductAmount = {
+  NoProducts: 0,
+  OneProduct: 1,
+  MaxProductAmount: 9,
+} as const;
+
 
 export const shoppingCartSlice = createSlice({
   name: 'shopping-cart',
@@ -46,14 +53,14 @@ export const shoppingCartSlice = createSlice({
       const findAddedProducts = state.addedProducts.find((product) => product.id === action.payload.id);
 
       if (findAddedProducts && findAddedProducts.quantity) {
-        if (findAddedProducts.quantity < 9) {
+        if (findAddedProducts.quantity < ProductAmount.MaxProductAmount) {
 
           findAddedProducts.quantity++;
         }
       } else {
         state.addedProducts.push({
           ...action.payload,
-          quantity: 1
+          quantity: ProductAmount.OneProduct
         });
       }
       shoppingCartSlice.caseReducers.updateTotals(state);
@@ -62,7 +69,7 @@ export const shoppingCartSlice = createSlice({
     decrementProductQuantity(state, action: PayloadAction<Product>) {
       const findAddedProducts = state.addedProducts.find((product) => product.id === action.payload.id);
 
-      if (findAddedProducts && findAddedProducts.quantity && findAddedProducts.quantity > 1) {
+      if (findAddedProducts && findAddedProducts.quantity && findAddedProducts.quantity > ProductAmount.OneProduct) {
         findAddedProducts.quantity--;
       }
       shoppingCartSlice.caseReducers.updateTotals(state);
@@ -81,20 +88,20 @@ export const shoppingCartSlice = createSlice({
       shoppingCartSlice.caseReducers.updateTotals(state);
     },
     clearCart(state) {
-      state.addedProducts.splice(0, state.addedProducts.length);
+      state.addedProducts.splice(ArrayMethodParameter.RemoveFromZeroIndex, state.addedProducts.length);
       shoppingCartSlice.caseReducers.updateTotals(state);
     },
     updateTotals(state: ShoppingCartState) {
-      state.totalQuantity = state.addedProducts.reduce((sum, product) => sum + (product.quantity || 0), 0);
-      state.totalPrice = state.addedProducts.reduce((sum, obj) => obj.price * (obj.quantity || 0) + sum, 0);
+      state.totalQuantity = state.addedProducts.reduce((sum, product) => sum + (product.quantity || ProductAmount.NoProducts), ArrayMethodParameter.StartAccumulationFromZero);
+      state.totalPrice = state.addedProducts.reduce((sum, obj) => obj.price * (obj.quantity || ProductAmount.NoProducts) + sum, ArrayMethodParameter.StartAccumulationFromZero);
 
       let discountPercent = getDiscountByQuantity(state.totalQuantity);
-      if (state.totalQuantity > 1) {
+      if (state.totalQuantity > ProductQuantityDiscountRange.OneProduct) {
         discountPercent = adjustDiscountByTotalPrice(state.totalPrice, discountPercent);
       }
 
       state.discountPercent = discountPercent;
-      state.totalPriceWithDiscount = Math.round(state.totalPrice - (state.totalPrice / 100 * state.discountPercent));
+      state.totalPriceWithDiscount = Math.round(state.totalPrice - (state.totalPrice / PERCENT_TOTAL * state.discountPercent));
     }
 
   }

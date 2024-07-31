@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Product } from '../../types/product';
 import ProductRating from '../product-rating/product-rating';
-import { AppRoute, MODAL_NAMES } from '../../const';
+import { AppRoute, ModalName } from '../../const';
 import { Link, generatePath } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/store';
 import { selectAddedProducts } from '../../store/selectors/shopping-cart-selectors';
@@ -25,7 +25,7 @@ const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.El
 
 
   const handleButtonClick = () => {
-    onProductClick(MODAL_NAMES.CATALOG_ADD_MODAL, product);
+    onProductClick(ModalName.CatalogAddModal, product);
   };
 
   return (

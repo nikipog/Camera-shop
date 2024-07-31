@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { selectProduct, selectProductStatus } from '../../store/selectors/product-selectors';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { AppRoute, MODAL_NAMES, RequestStatus, ToastifyMessages } from '../../const';
+import { AppRoute, ModalName, RequestStatus, ToastifyMessage } from '../../const';
 import { fetchProduct } from '../../store/thunks/products/products';
 import { Product } from '../../types/product';
 import ProductRating from '../../components/product-rating/product-rating';
@@ -39,7 +39,7 @@ const ProductPage = memo((): JSX.Element => {
 
   const handleAddButtonClick = () => {
     setSelectedProduct(product);
-    openModal(MODAL_NAMES.CATALOG_ADD_MODAL);
+    openModal(ModalName.CatalogAddModal);
     scrollController.disableScroll();
   };
 
@@ -52,7 +52,7 @@ const ProductPage = memo((): JSX.Element => {
           dispatch(fetchReviews(Number(safeId))).unwrap(),
         ]);
       } catch (error) {
-        toast.error(ToastifyMessages.FetchProductsError);
+        toast.error(ToastifyMessage.FetchProductsError);
       }
     };
 
