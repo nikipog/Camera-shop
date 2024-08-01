@@ -19,6 +19,7 @@ type Product = {
     previewImg2x: string;
     previewImgWebp: string;
     previewImgWebp2x: string;
+    quantity?: number;
 }
 
 export type { Product };

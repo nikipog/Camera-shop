@@ -1,8 +1,10 @@
 import { memo } from 'react';
 import { Product } from '../../types/product';
 import ProductRating from '../product-rating/product-rating';
-import { AppRoute, MODAL_NAMES } from '../../const';
+import { AppRoute, ModalName } from '../../const';
 import { Link, generatePath } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/store';
+import { selectAddedProducts } from '../../store/selectors/shopping-cart-selectors';
 
 
 type ProductCardProps = {
@@ -16,8 +18,14 @@ const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.El
 
   const url = generatePath(AppRoute.Product, { id: id.toString() });
 
+  const addedProducts = useAppSelector(selectAddedProducts);
+
+
+  const isInCart = addedProducts.some((item) => item.id === id);
+
+
   const handleButtonClick = () => {
-    onProductClick(MODAL_NAMES.CATALOG_CALL_MODAL, product);
+    onProductClick(ModalName.CatalogAddModal, product);
   };
 
   return (
@@ -55,13 +63,25 @@ const ProductCard = memo(({ product, onProductClick }: ProductCardProps): JSX.El
         </p>
       </div>
       <div className="product-card__buttons">
-        <button
-          className="btn btn--purple product-card__btn"
-          type="button"
-          onClick={handleButtonClick}
-        >
-          Купить
-        </button>
+        {!isInCart &&
+          <button
+            className="btn btn--purple product-card__btn"
+            type="button"
+            onClick={handleButtonClick}
+          >
+            Купить
+          </button>}
+
+        {isInCart &&
+          <Link
+            className="btn btn--purple-border product-card__btn product-card__btn--in-cart"
+            to={AppRoute.Cart}
+          >
+            <svg width="16" height="16" aria-hidden="true">
+              <use xlinkHref="#icon-basket"></use>
+            </svg>В корзине
+          </Link>}
+
         <Link
           className="btn btn--transparent"
           to={url}

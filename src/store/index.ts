@@ -7,6 +7,8 @@ import { reviewsSlice } from './slices/reviews/reviews';
 import { filterSlice } from './slices/filters/filter';
 import { sortSlice } from './slices/sort/sort';
 import { paginationSlice } from './slices/pagination/pagination';
+import { shoppingCartSlice } from './slices/shopping-cart/shopping-cart';
+import localStorageMiddleware from './middlewares/local-storage-middleware/local-storage-middleware';
 
 
 const reducer = combineReducers({
@@ -16,7 +18,8 @@ const reducer = combineReducers({
   [reviewsSlice.name]: reviewsSlice.reducer,
   [filterSlice.name]: filterSlice.reducer,
   [sortSlice.name]: sortSlice.reducer,
-  [paginationSlice.name]: paginationSlice.reducer
+  [paginationSlice.name]: paginationSlice.reducer,
+  [shoppingCartSlice.name]: shoppingCartSlice.reducer
 });
 
 
@@ -27,6 +30,6 @@ export const store = configureStore({
         extraArgument:
           createApi()
       }
-    }),
+    }).concat(localStorageMiddleware),
   reducer,
 });

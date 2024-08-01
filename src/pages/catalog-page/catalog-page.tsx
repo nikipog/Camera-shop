@@ -9,14 +9,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { useSelectedProduct } from '../../hooks/select-product';
 import { scrollController } from '../../utils/scroll-controller';
 import { Product } from '../../types/product';
-import { EmptyFilters, RequestStatus, SortTypesAndOrder } from '../../const';
+import { AppRoute, EmptyFilters, RequestStatus, SortTypesAndOrder } from '../../const';
 import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import { selectFilters } from '../../store/selectors/filter-selectors';
 import { selectSort } from '../../store/selectors/sort-selectors';
 import Pagination from '../../components/pagination/pagination';
 import { selectCurrentPage, selectMaxProductsPerPage } from '../../store/selectors/pagination-selectors';
 import { setCurrentPage, setTotalPages } from '../../store/slices/pagination/pagination';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 const CatalogPage = memo((): JSX.Element => {
@@ -160,12 +160,15 @@ const CatalogPage = memo((): JSX.Element => {
           <div className="container">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link" href="index.html">
+                <Link
+                  className="breadcrumbs__link"
+                  to={AppRoute.Catalog}
+                >
                   Главная
                   <svg width={5} height={8} aria-hidden="true">
                     <use xlinkHref="#icon-arrow-mini" />
                   </svg>
-                </a>
+                </Link>
               </li>
               <li className="breadcrumbs__item">
                 <span className="breadcrumbs__link breadcrumbs__link--active">

@@ -2,7 +2,7 @@ import { useAppSelector } from '../../hooks/store';
 import { selectCurrentPage, selectTotalPages } from '../../store/selectors/pagination-selectors';
 import { Link } from 'react-router-dom';
 import PaginationTextButton from '../pagination-text-button/pagination-text-button';
-import { PaginationConstants } from '../../const';
+import { PaginationConstant } from '../../const';
 
 type PaginationProps = {
   onPageChange: (event: React.MouseEvent<HTMLLIElement>) => void;
@@ -21,22 +21,22 @@ const Pagination = ({ onPageChange }: PaginationProps): JSX.Element => {
   let visiblePages: number[] = [];
 
   if (totalPages !== null) {
-    if (totalPages <= PaginationConstants.PagesPerGroup) {
-      visiblePages = Array.from({ length: totalPages }, (_, i) => i + PaginationConstants.FirstPage);
+    if (totalPages <= PaginationConstant.PagesPerGroup) {
+      visiblePages = Array.from({ length: totalPages }, (_, i) => i + PaginationConstant.FirstPage);
     } else {
-      const currentRangeStart = Math.floor((currentPage - PaginationConstants.FirstPage) / PaginationConstants.PagesPerGroup) * PaginationConstants.PagesPerGroup + PaginationConstants.FirstPage;
-      const currentRangeEnd = Math.min(currentRangeStart + PaginationConstants.AdditionalPages, totalPages);
+      const currentRangeStart = Math.floor((currentPage - PaginationConstant.FirstPage) / PaginationConstant.PagesPerGroup) * PaginationConstant.PagesPerGroup + PaginationConstant.FirstPage;
+      const currentRangeEnd = Math.min(currentRangeStart + PaginationConstant.AdditionalPages, totalPages);
 
-      visiblePages = Array.from({ length: currentRangeEnd - currentRangeStart + PaginationConstants.FirstPage }, (_, i) => currentRangeStart + i);
+      visiblePages = Array.from({ length: currentRangeEnd - currentRangeStart + PaginationConstant.FirstPage }, (_, i) => currentRangeStart + i);
     }
   }
 
 
-  const currentGroupIndex = Math.floor((currentPage - PaginationConstants.FirstPage) / PaginationConstants.PagesPerGroup);
-  const totalGroups = totalPages !== null ? Math.ceil(totalPages / PaginationConstants.PagesPerGroup) : PaginationConstants.NoGroups;
+  const currentGroupIndex = Math.floor((currentPage - PaginationConstant.FirstPage) / PaginationConstant.PagesPerGroup);
+  const totalGroups = totalPages !== null ? Math.ceil(totalPages / PaginationConstant.PagesPerGroup) : PaginationConstant.NoGroups;
 
-  const hasNextPageRange = currentGroupIndex < totalGroups - PaginationConstants.FirstPage;
-  const hasPreviousPageRange = currentGroupIndex > PaginationConstants.NoGroups;
+  const hasNextPageRange = currentGroupIndex < totalGroups - PaginationConstant.FirstPage;
+  const hasPreviousPageRange = currentGroupIndex > PaginationConstant.NoGroups;
 
   return (
 

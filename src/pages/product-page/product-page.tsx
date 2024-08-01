@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { selectProduct, selectProductStatus } from '../../store/selectors/product-selectors';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { AppRoute, RequestStatus, ToastifyMessages } from '../../const';
+import { AppRoute, ModalName, RequestStatus, ToastifyMessage } from '../../const';
 import { fetchProduct } from '../../store/thunks/products/products';
 import { Product } from '../../types/product';
 import ProductRating from '../../components/product-rating/product-rating';
@@ -14,6 +14,9 @@ import { fetchReviews } from '../../store/thunks/reviews/reviews';
 import { selectReviews } from '../../store/selectors/reviews-selectors';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import ScrollToTopButton from '../../components/scroll-to-top-button/scroll-to-top-button';
+import { useSelectedProduct } from '../../hooks/select-product';
+import { useModalContext } from '../../hooks/modal-context';
+import { scrollController } from '../../utils/scroll-controller';
 
 const TabNames = {
   Characteristics: 'characteristics',
@@ -31,6 +34,15 @@ const ProductPage = memo((): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const safeId = id ?? '';
 
+  const { setSelectedProduct } = useSelectedProduct();
+  const { openModal } = useModalContext();
+
+  const handleAddButtonClick = () => {
+    setSelectedProduct(product);
+    openModal(ModalName.CatalogAddModal);
+    scrollController.disableScroll();
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +52,7 @@ const ProductPage = memo((): JSX.Element => {
           dispatch(fetchReviews(Number(safeId))).unwrap(),
         ]);
       } catch (error) {
-        toast.error(ToastifyMessages.FetchProductsError);
+        toast.error(ToastifyMessage.FetchProductsError);
       }
     };
 
@@ -128,7 +140,11 @@ const ProductPage = memo((): JSX.Element => {
                   <p className="product__price">
                     <span className="visually-hidden">Цена:</span>{price.toLocaleString()} ₽
                   </p>
-                  <button className="btn btn--purple" type="button">
+                  <button
+                    className="btn btn--purple"
+                    type="button"
+                    onClick={handleAddButtonClick}
+                  >
                     <svg width={24} height={16} aria-hidden="true">
                       <use xlinkHref="#icon-add-basket" />
                     </svg>

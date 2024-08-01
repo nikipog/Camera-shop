@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RequestStatus } from '../../../const';
 import { ordersThunk } from '../../thunks/order/order';
+import { AllowedCoupons } from '../../../types/order';
 
 interface OrderState {
   camerasIds: number[];
-  tel: string;
+  coupon: AllowedCoupons;
   status: RequestStatus;
 }
 
 const initialState: OrderState = {
   camerasIds: [],
-  tel: '',
+  coupon: null,
   status: RequestStatus.Idle,
 };
 
@@ -20,9 +21,6 @@ export const orderSlice = createSlice({
   reducers: {
     setCamerasIds(state, action: PayloadAction<number[]>) {
       state.camerasIds = action.payload;
-    },
-    setTel(state, action: PayloadAction<string>) {
-      state.tel = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -39,7 +37,7 @@ export const orderSlice = createSlice({
   },
 });
 
-export const { setCamerasIds, setTel } = orderSlice.actions;
+export const { setCamerasIds } = orderSlice.actions;
 
 export const orderActions = {
   ...orderSlice.actions,

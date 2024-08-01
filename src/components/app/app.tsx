@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import CatalogPage from '../../pages/catalog-page/catalog-page';
 import ProductPage from '../../pages/product-page/product-page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AppRoute, ToastifyMessages } from '../../const';
+import { AppRoute, ToastifyMessage } from '../../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
 import { productsActions } from '../../store/slices/products/products';
@@ -13,6 +13,7 @@ import { ModalProvider } from '../../context/modal-context';
 import ModalManager from '../modals/modal-manager';
 import { SelectedProductProvider } from '../../context/selected-product-context';
 import 'react-toastify/dist/ReactToastify.css';
+import CartPage from '../../pages/cart-page/cart-page';
 
 function App(): JSX.Element {
 
@@ -22,17 +23,17 @@ function App(): JSX.Element {
     dispatch(productsActions.fetchAllProducts())
       .unwrap()
       .catch(() => {
-        toast.error(ToastifyMessages.FetchProductsError);
+        toast.error(ToastifyMessage.FetchProductsError);
       });
   }, [dispatch]);
 
   return (
     <HelmetProvider>
       <ToastContainer />
-      <ModalProvider>
-        <SelectedProductProvider>
-          <ModalManager />
-          <BrowserRouter>
+      <BrowserRouter>
+        <ModalProvider>
+          <SelectedProductProvider>
+            <ModalManager />
             <Routes>
               <Route
                 path={AppRoute.Catalog}
@@ -46,6 +47,10 @@ function App(): JSX.Element {
                   path={AppRoute.Product}
                   element={<ProductPage />}
                 />
+                <Route
+                  path={AppRoute.Cart}
+                  element={<CartPage />}
+                />
               </Route>
 
 
@@ -55,9 +60,9 @@ function App(): JSX.Element {
               />
 
             </Routes>
-          </BrowserRouter>
-        </SelectedProductProvider>
-      </ModalProvider>
+          </SelectedProductProvider>
+        </ModalProvider>
+      </BrowserRouter>
     </HelmetProvider >
   );
 }
