@@ -27,9 +27,9 @@ function CartFailureOrderModal(): JSX.Element | null {
   return (
     <div className="modal is-active modal--narrow">
       <div className="modal__wrapper">
-        <div className="modal__overlay" ref={overlayRef} />
+        <div className="modal__overlay" ref={overlayRef} data-testid="modal-overlay" />
         <div className={`modal__content ${styles.modalContent}`} ref={modalRef}>
-          <p className={`title title--h4 ${styles.title}`}>Не удалось оформить заказ</p>
+          <p className={`title title--h4 ${styles.title}`} data-testid="failure-order-message">Не удалось оформить заказ</p>
           <svg className='modal__icon' width={80} height={78} aria-hidden="true">
             <use xlinkHref="#icon-sad-smiley" />
           </svg>
@@ -39,6 +39,7 @@ function CartFailureOrderModal(): JSX.Element | null {
               type="button"
               onClick={handleContinueShoppingButtonClick}
               ref={continueShoppingRef}
+              data-testid="continue-shopping-button"
             >
               Вернуться к покупкам
             </button>
@@ -49,6 +50,7 @@ function CartFailureOrderModal(): JSX.Element | null {
             type="button"
             aria-label="Закрыть попап"
             onClick={handleCloseButtonClick}
+            data-testid="close-modal-button"
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />
