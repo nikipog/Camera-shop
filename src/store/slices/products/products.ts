@@ -4,7 +4,7 @@ import { Product } from '../../../types/product';
 import { fetchAllProducts } from '../../thunks/products/products';
 
 
-interface ProductsState {
+export interface ProductsState {
   products: Product[];
   status: RequestStatus;
 }

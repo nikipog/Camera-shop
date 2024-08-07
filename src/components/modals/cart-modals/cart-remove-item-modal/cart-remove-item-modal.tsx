@@ -55,9 +55,9 @@ function CartRemoveItemModal(): JSX.Element | null {
   return (
     <div className="modal is-active">
       <div className="modal__wrapper">
-        <div className="modal__overlay" ref={overlayRef} />
+        <div className="modal__overlay" ref={overlayRef} data-testid="modal-overlay"/>
         <div className="modal__content" ref={modalRef}>
-          <p className="title title--h4">Удалить этот товар?</p>
+          <p className="title title--h4" data-testid="remove-product-message">Удалить этот товар?</p>
           <div className="basket-item basket-item--short">
             <div className="basket-item__img">
               <picture>
@@ -106,6 +106,7 @@ function CartRemoveItemModal(): JSX.Element | null {
               className="btn btn--transparent modal__btn modal__btn--half-width"
               onClick={handleContinueShoppingButtonClick}
               ref={continueShoppingRef}
+              data-testid="continue-shopping-button"
             >
               Продолжить покупки
             </button>
@@ -116,6 +117,7 @@ function CartRemoveItemModal(): JSX.Element | null {
             aria-label="Закрыть попап"
             ref={closeButtonRef}
             onClick={handleCloseButtonClick}
+            data-testid="close-modal-button"
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />

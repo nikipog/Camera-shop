@@ -55,7 +55,7 @@ const CartPage = memo((): JSX.Element => {
           <div className="container">
             <h1 className="title title--h2">Корзина</h1>
             {isLoading &&
-            <div className='loader'>
+            <div className='loader' data-testid="loading-spinner">
               <svg width="200" height="200" aria-hidden="true">
                 <use xlinkHref="#icon-spinner" />
               </svg>
@@ -68,8 +68,8 @@ const CartPage = memo((): JSX.Element => {
                   каталоге.
                 </Link>
               </p>}
-            <CartList addedProducts={addedProducts} />
-            <CartSummary />
+            <CartList addedProducts={addedProducts} data-testid="cart-list"/>
+            <CartSummary data-testid="cart-summary"/>
           </div>
         </section>
       </div>

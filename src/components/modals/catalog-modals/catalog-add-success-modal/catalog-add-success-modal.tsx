@@ -31,7 +31,7 @@ function CatalogAddSuccessModal(): JSX.Element | null {
   return (
     <div className="modal is-active modal--narrow">
       <div className="modal__wrapper">
-        <div className="modal__overlay" ref={overlayRef} />
+        <div className="modal__overlay" ref={overlayRef} data-testid="modal-overlay"/>
         <div className="modal__content" ref={modalRef}>
           <p className="title title--h4">Товар успешно добавлен в корзину</p>
           <svg className="modal__icon" width={86} height={80} aria-hidden="true">

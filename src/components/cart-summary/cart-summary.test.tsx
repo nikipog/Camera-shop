@@ -6,7 +6,25 @@ import { State } from '../../types/state';
 import { RequestStatus } from '../../const';
 import userEvent from '@testing-library/user-event';
 
+
 describe('Component: CartSummary', () => {
+
+  beforeAll(() => {
+    Object.defineProperty(HTMLFormElement.prototype, 'requestSubmit', {
+      value: function () {
+        const noop = null;
+        return noop;
+      },
+      configurable: true,
+    });
+    // Мокируем window.scrollTo
+    window.scrollTo = () => {
+      const noop = null;
+      return noop;
+    };
+  });
+
+
   it('should render correctly with products in the cart', () => {
     const initialState: Partial<State> = {
       'shopping-cart': {
@@ -111,9 +129,5 @@ describe('Component: CartSummary', () => {
     const applyButton = screen.getByRole('button', { name: /Применить/i });
     await userEvent.click(applyButton);
 
-    // Здесь мы должны проверить, что действие для применения промокода было вызвано
-    // Пример:
-    // const actions = mockStore.getActions();
-    // expect(actions).toContainEqual(expect.objectContaining({ type: 'shopping-cart/applyPromoCode' }));
   });
 });
