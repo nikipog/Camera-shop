@@ -81,6 +81,29 @@ export const MOCK_REVIEW =
   rating: 4
 };
 
+export const MOCK_REVIEWS =
+[{
+  id: 'f1d10ddd-2a21-4f71-9e1e-5f511703fbdd',
+  createAt: '2022-07-09T13:24:57.980Z',
+  cameraId: 1,
+  userName: 'Кирилл',
+  advantage: 'Легкая в плане веса, удобная в интерфейсе',
+  disadvantage: 'Быстро садиться зарядка',
+  review: 'Это моя первая камера. Я в восторге, нареканий нет',
+  rating: 4
+},
+{
+  id: 'f1d10ddd-2a21-4f71-9e1e-5f511703fbd',
+  createAt: '2022-08-09T13:24:57.980Z',
+  cameraId: 1,
+  userName: 'Андрей',
+  advantage: 'Легкая в плане веса',
+  disadvantage: 'Быстро садится зарядка',
+  review: 'Это моя вторая камера. Я в восторге, нареканий нет',
+  rating: 3
+}
+];
+
 
 export const MOCK_ORDER = {
   camerasIds: [1],

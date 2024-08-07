@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, vi, expect } from 'vitest';
-import { MemoryRouter } from 'react-router-dom';
 import Layout from './layout';
+import { State } from '../../types/state';
+import { RequestStatus } from '../../const';
+import { withMemoryStoreWrapperAndContext } from '../../utils/mock-component';
 
 // Mock the SearchInputField component
 vi.mock('../search-input-field/search-input-field', () => ({
@@ -9,12 +11,24 @@ vi.mock('../search-input-field/search-input-field', () => ({
 }));
 
 describe('Layout', () => {
+
   it('renders the layout with main elements', () => {
-    render(
-      <MemoryRouter>
-        <Layout />
-      </MemoryRouter>
-    );
+    const initialState: Partial<State> = {
+      'shopping-cart': {
+        addedProducts: [],
+        totalQuantity: 0,
+        totalPrice: 0,
+        totalPriceWithDiscount: 0,
+        discountPercent: 0,
+      },
+      orders: {
+        status: RequestStatus.Success,
+        camerasIds: [],
+        coupon: null,
+      },
+    };
+    const { wrappedComponent } = withMemoryStoreWrapperAndContext(<Layout />, initialState);
+    render(wrappedComponent);
 
     // Проверка наличия логотипов
     expect(screen.getAllByLabelText(/Переход на главную/i)).toHaveLength(2);

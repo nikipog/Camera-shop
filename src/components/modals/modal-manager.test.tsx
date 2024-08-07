@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, vi, expect } from 'vitest';
 import { useModalContext } from '../../hooks/modal-context';
 import ModalManager from './modal-manager';
+import { withMemoryStoreWrapperAndContext } from '../../utils/mock-component';
+
 
 // Mock the CatalogCallModal component
 vi.mock('./catalog-modals/catalog-call-modal', () => ({
@@ -19,19 +21,23 @@ vi.mock('../../hooks/modal-context', () => ({
 describe('ModalManager', () => {
   it('renders null when modal is null', () => {
     (useModalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ modal: null });
-    render(<ModalManager />);
+    const { wrappedComponent } = withMemoryStoreWrapperAndContext(<ModalManager />, {});
+    render(wrappedComponent);
     expect(screen.queryByText(/Catalog Call Modal Content/i)).not.toBeInTheDocument();
   });
 
-  it('renders CatalogCallModal when modal is CatalogCallModal', () => {
-    (useModalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ modal: 'CatalogCallModal' });
-    render(<ModalManager />);
-    expect(screen.getByText(/Catalog Call Modal Content/i)).toBeInTheDocument();
+  it('renders CartFailureOrderModal when modal is CartFailureOrderModal', () => {
+    (useModalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ modal: 'CartFailureOrderModal' });
+    const { wrappedComponent } = withMemoryStoreWrapperAndContext(<ModalManager />, {});
+    render(wrappedComponent);
+    // Добавляем отладочную строку
+    expect(screen.getByText(/Вернуться к покупкам/i)).toBeInTheDocument();
   });
 
   it('renders null when modal is an unknown type', () => {
     (useModalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ modal: 'UnknownModal' });
-    render(<ModalManager />);
+    const { wrappedComponent } = withMemoryStoreWrapperAndContext(<ModalManager />, {});
+    render(wrappedComponent);
     expect(screen.queryByText(/Catalog Call Modal Content/i)).not.toBeInTheDocument();
   });
 });

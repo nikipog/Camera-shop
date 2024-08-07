@@ -8,7 +8,7 @@ type CartListProps = {
 }
 
 const CartList = memo(({ addedProducts }: CartListProps): JSX.Element => (
-  <ul className="basket__list">
+  <ul className="basket__list" data-testid="cart-list">
     {addedProducts.map((product) => (
       <CartItem
         key={product.id}

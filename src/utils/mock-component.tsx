@@ -56,11 +56,13 @@ export function withMemoryStoreWrapperAndContext(
     wrappedComponent: (
       <Provider store={mockStore}>
         <MemoryRouter>
-          <ModalProvider>
-            <SelectedProductProvider>
-              {component}
-            </SelectedProductProvider>
-          </ModalProvider>
+          <HelmetProvider>
+            <ModalProvider>
+              <SelectedProductProvider>
+                {component}
+              </SelectedProductProvider>
+            </ModalProvider>
+          </HelmetProvider>
         </MemoryRouter>
       </Provider>
     ),

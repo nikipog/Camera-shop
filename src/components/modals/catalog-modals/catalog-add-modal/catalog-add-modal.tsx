@@ -41,9 +41,9 @@ function CatalogAddModal(): JSX.Element | null {
   return (
     <div className="modal is-active">
       <div className="modal__wrapper">
-        <div className="modal__overlay" ref={overlayRef} />
+        <div className="modal__overlay" ref={overlayRef} data-testid="modal-overlay"/>
         <div className="modal__content" ref={modalRef}>
-          <p className="title title--h4">Добавить товар в корзину</p>
+          <p className="title title--h4" data-testid="add-product-message">Добавить товар в корзину</p>
           <div className="basket-item basket-item--short">
             <div className="basket-item__img">
               <picture>
@@ -85,6 +85,7 @@ function CatalogAddModal(): JSX.Element | null {
               type="button"
               ref={addProductInCartRef}
               onClick={handleAddProductButtonClick}
+              data-testid="add-product-button"
             >
               <svg width={24} height={16} aria-hidden="true">
                 <use xlinkHref="#icon-add-basket" />
@@ -98,6 +99,7 @@ function CatalogAddModal(): JSX.Element | null {
             aria-label="Закрыть попап"
             ref={closeButtonRef}
             onClick={handleCloseButtonClick}
+            data-testid="close-modal-button"
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />

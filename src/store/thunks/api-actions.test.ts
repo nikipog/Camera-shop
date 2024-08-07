@@ -1,14 +1,14 @@
 import MockAdapter from 'axios-mock-adapter';
-import { createApi } from '../services/api';
+import { createApi } from '../../services/api';
 import thunk from 'redux-thunk';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Action } from 'redux';
-import { AppThunkDispatch, MOCK_ORDER, MOCK_PRODUCT, MOCK_REVIEW, PRODUCT_MOCK_ID, extractActionsTypes, mockProducts } from '../utils/mocks';
-import { State } from '../types/state';
-import { Endpoint, HttpResponseStatusCode } from '../const';
-import { fetchAllProducts, fetchProduct } from './thunks/products/products';
-import { fetchReviews } from './thunks/reviews/reviews';
-import { ordersThunk } from './thunks/order/order';
+import { AppThunkDispatch, MOCK_ORDER, MOCK_PRODUCT, MOCK_REVIEW, PRODUCT_MOCK_ID, extractActionsTypes, mockProducts } from '../../utils/mocks';
+import { State } from '../../types/state';
+import { Endpoint, HttpResponseStatusCode } from '../../const';
+import { fetchAllProducts, fetchProduct } from './products/products';
+import { fetchReviews } from './reviews/reviews';
+import { ordersThunk } from './order/order';
 
 
 describe('Async action', () => {

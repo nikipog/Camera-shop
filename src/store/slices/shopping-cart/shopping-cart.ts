@@ -35,7 +35,7 @@ const loadStateFromLocalStorage = (): ShoppingCartState => {
   }
 };
 
-const initialState: ShoppingCartState = loadStateFromLocalStorage();
+export const initialState: ShoppingCartState = loadStateFromLocalStorage();
 
 export const ProductAmount = {
   NoProducts: 0,

@@ -92,7 +92,7 @@ const CartItem = memo(({ addedProduct }: CartItemProps): JSX.Element => {
 
 
   return (
-    <li className="basket-item">
+    <li className="basket-item" data-testid={`cart-item-${id}`}>
       <div className="basket-item__img">
         <picture>
           <source

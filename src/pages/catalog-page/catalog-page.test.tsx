@@ -1,61 +1,83 @@
-import { render, screen } from '@testing-library/react';
 import { configureStore } from '@reduxjs/toolkit';
+import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+import thunk from 'redux-thunk';
 import CatalogPage from './catalog-page';
-import productsReducer, { initialState as productsInitialState } from '../../store/slices/products/products';
-import filtersReducer, { initialState as filtersInitialState } from '../../store/slices/filters/filter';
-import sortReducer, { initialState as sortInitialState } from '../../store/slices/sort/sort';
-import paginationReducer, { initialState as paginationInitialState } from '../../store/slices/pagination/pagination';
-import { Product } from '../../types/product';
 import { RequestStatus } from '../../const';
-import { vi } from 'vitest';
-import { withMemoryStoreWrapperAndContext } from '../../utils/mock-component';
+import filterReducer from '../../store/slices/filters/filter';
+import paginationReducer from '../../store/slices/pagination/pagination';
+import productReducer from '../../store/slices/product/product';
+import reviewReducer from '../../store/slices/reviews/reviews';
+import shoppingCartReducer from '../../store/slices/shopping-cart/shopping-cart';
+import sortReducer from '../../store/slices/sort/sort';
+import productsReducer from '../../store/slices/products/products';
+import { RootState } from '../../types/store';
+import { ModalProvider } from '../../context/modal-context';
+import { SelectedProductProvider } from '../../context/selected-product-context';
 
-// Частичное мокирование react-helmet-async
-vi.mock('react-helmet-async', () => ({
-  Helmet: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-}));
 
-const mockProduct: Product = {
-  id: 1,
-  name: 'Test Product',
-  category: 'Фотоаппарат',
-  type: 'Цифровая',
-  level: 'Профессиональный',
-  price: 5000,
-  rating: 4.5,
-  description: 'Test Description',
-  previewImg: 'test.jpg',
-  previewImg2x: 'test@2x.jpg',
-  previewImgWebp: 'test.webp',
-  previewImgWebp2x: 'test@2x.webp',
-  reviewCount: 10,
-  vendorCode: '12345', // добавленное свойство
-};
+const createMockStore = (initialState: Partial<RootState>) => configureStore({
+  reducer: {
+    products: productsReducer,
+    filters: filterReducer,
+    sort: sortReducer,
+    pagination: paginationReducer,
+    reviews: reviewReducer,
+    'shopping-cart': shoppingCartReducer,
+    product: productReducer,
+  },
+  preloadedState: initialState,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(thunk),
+});
 
 describe('CatalogPage', () => {
-  const store = configureStore({
-    reducer: {
-      products: productsReducer,
-      filters: filtersReducer,
-      sort: sortReducer,
-      pagination: paginationReducer,
+  const initialState: Partial<RootState> = {
+    products: { products: [], status: RequestStatus.Idle },
+    filters: {
+      category: null,
+      type: [],
+      level: [],
+      priceInputValues: { minPriceInputValue: null, maxPriceInputValue: null },
+      priceRange: { min: null, max: null },
     },
-    preloadedState: {
-      products: {
-        ...productsInitialState,
-        products: [mockProduct],
-        status: RequestStatus.Success,
-      },
-      filters: filtersInitialState,
-      sort: sortInitialState,
-      pagination: paginationInitialState,
-    },
+    sort: { sortType: 'sortPrice', sortOrder: 'up' },
+    pagination: { currentPage: 1, totalPages: null, maxProductsPerPage: 10 },
+  };
+
+  const renderComponent = (state = initialState) => {
+    const store = createMockStore(state);
+    return render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ModalProvider>
+              <SelectedProductProvider>
+                <CatalogPage />
+              </SelectedProductProvider>
+            </ModalProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>
+    );
+  };
+
+  it('should render CatalogPage', () => {
+    renderComponent();
+    expect(screen.getByText('Каталог фото- и видеотехники')).toBeInTheDocument();
   });
 
-  it('renders CatalogPage component', () => {
-    const { wrappedComponent } = withMemoryStoreWrapperAndContext(<CatalogPage />, store.getState());
-    render(wrappedComponent);
-    expect(screen.getByText(/Каталог фото- и видеотехники/i)).toBeInTheDocument();
+  it('should show loading state', () => {
+    const loadingState: Partial<RootState> = {
+      ...initialState,
+      products: { products: [], status: RequestStatus.Loading },
+    };
+
+    renderComponent(loadingState);
+
+    expect(screen.getByText('Загрузка ...')).toBeInTheDocument();
   });
 
 });
